@@ -33,4 +33,9 @@ public class Admin extends Profile{
     public String toString() {
         return "Admin{" + "currentAccount=" + currentAccount + '}';
     }
+
+    @Override
+    public void logIn() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

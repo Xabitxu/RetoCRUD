@@ -44,13 +44,13 @@ VALUES
 ('asanchez', 'qwerty', 'asanchez@example.com', 104, 'Ana', 900112233, 'Sanchez'),
 ('rluna', 'zxcvbn', 'rluna@example.com', 105, 'Rosa', 955667788, 'Luna');
 
-INSERT INTO USER_ (USERNAME, PASSWORD_, EMAIL, USER_CODE, NAME_, TELEPHONE, SURNAME, GENDER, CARD_NUMBER)
+INSERT INTO USER_ (USERNAME, GENDER, CARD_NUMBER)
 VALUES
-('jlopez', 'pass123', 'jlopez@example.com', 101, 'Juan', 987654321, 'Lopez', 'Masculino', 12345678),
-('mramirez', 'pass456', 'mramirez@example.com', 102, 'Maria', 912345678, 'Ramirez', 'Femenino', 87654321),
-('cperez', 'pass789', 'cperez@example.com', 103, 'Carlos', 934567890, 'Perez', 'Masculino', 23456789);
+('jlopez', 'Masculino', 12345678),
+('mramirez', 'Femenino', 87654321),
+('cperez', 'Masculino', 23456789);
 
-INSERT INTO ADMIN_ (USERNAME, PASSWORD_, EMAIL, USER_CODE, NAME_, TELEPHONE, SURNAME, CURRENT_ACCOUNT)
+INSERT INTO ADMIN_ (USERNAME, CURRENT_ACCOUNT)
 VALUES
-('asanchez', 'qwerty', 'asanchez@example.com', 104, 'Ana', 900112233, 'Sanchez', 'CTA-001'),
-('rluna', 'zxcvbn', 'rluna@example.com', 105, 'Rosa', 955667788, 'Luna', 'CTA-002');
+('asanchez', 'CTA-001'),
+('rluna', 'CTA-002');

@@ -45,4 +45,9 @@ public class User extends Profile{
     public String toString() {
         return "User{" + "gender=" + gender + ", cardNumber=" + cardNumber + '}';
     }
+
+    @Override
+    public void logIn() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

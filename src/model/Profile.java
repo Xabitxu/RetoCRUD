@@ -5,7 +5,7 @@
  */
 package model;
 
-public class Profile {
+public abstract class Profile {
     private String username;
     private String password;
     private String email;
@@ -94,4 +94,6 @@ public class Profile {
     public String toString() {
         return "Profile{" + "username=" + username + ", password=" + password + ", email=" + email + ", userCode=" + userCode + ", name=" + name + ", telephone=" + telephone + ", surname=" + surname + '}';
     }
+    
+    public abstract void logIn();
 }
