@@ -12,7 +12,7 @@ package model;
 public class Admin extends Profile{
     private String currentAccount;
 
-    public Admin(String currentAccount, String username, String password, String email, int userCode, String name, int telephone, String surname) {
+    public Admin(String currentAccount, String username, String password, String email, int userCode, String name, String telephone, String surname) {
         super(username, password, email, userCode, name, telephone, surname);
         this.currentAccount=currentAccount;
     }

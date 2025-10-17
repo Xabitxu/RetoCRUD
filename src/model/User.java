@@ -11,25 +11,26 @@ package model;
  */
 public class User extends Profile{
     private String gender;
-    private int cardNumber;
+    private String cardNumber;
 
-    public User(String gender, int cardNumber, String username, String password, String email, int userCode, String name, int telephone, String surname) {
+    public User(String gender, String cardNumber, String username, String password, String email, int userCode, String name, String telephone, String surname) {
         super(username, password, email, userCode, name, telephone, surname);
         this.gender = gender;
         this.cardNumber = cardNumber;
     }
+  
 
     public User() {
         super();
         this.gender = "";
-        this.cardNumber = 0;
+        this.cardNumber = "";
     }
 
     public String getGender() {
         return gender;
     }
 
-    public int getCardNumber() {
+    public String getCardNumber() {
         return cardNumber;
     }
 
@@ -37,7 +38,7 @@ public class User extends Profile{
         this.gender = gender;
     }
 
-    public void setCardNumber(int cardNumber) {
+    public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 

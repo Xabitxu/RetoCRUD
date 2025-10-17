@@ -11,10 +11,10 @@ public abstract class Profile {
     private String email;
     private int userCode;
     private String name;
-    private int telephone;
+    private String telephone;
     private String surname;
 
-    public Profile(String username, String password, String email, int userCode, String name, int telephone, String surname) {
+    public Profile(String username, String password, String email, int userCode, String name, String telephone, String surname) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -30,7 +30,7 @@ public abstract class Profile {
         this.email = "";
         this.userCode = 0;
         this.name = "";
-        this.telephone = 0;
+        this.telephone = "";
         this.surname = "";
     }
 
@@ -54,7 +54,7 @@ public abstract class Profile {
         return name;
     }
 
-    public int getTelephone() {
+    public String getTelephone() {
         return telephone;
     }
 
@@ -82,7 +82,7 @@ public abstract class Profile {
         this.name = name;
     }
 
-    public void setTelephone(int telephone) {
+    public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
 
