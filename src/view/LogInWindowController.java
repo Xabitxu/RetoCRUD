@@ -47,48 +47,27 @@ public class LogInWindowController implements Initializable {
         Button sourceButton = (Button) event.getSource();
         String username = TextField_Username.getText();
         String password = PasswordField_Password.getText();
-        
-        if(source == Button_LogIn){
+
+        if (source == Button_LogIn) {
             Profile profile = cont.logIn(username, password);
-            
-        }
-        if(source == Button_SignUp){
-            
             try {
                 javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/MenuWindow.fxml"));
                 javafx.scene.Parent root = fxmlLoader.load();
-                
+
                 view.MenuWindowController controllerWindow = fxmlLoader.getController();
                 //Generar un set usuario para poder tenero ahi y usarlo
-                controllerWindow
+                controllerWindow.setUsuario(profile);
+                
+
             } catch (IOException ex) {
                 Logger.getLogger(LogInWindowController.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+        }
+        if (source == Button_SignUp) {
+
         }
 
-
-
-        if (usuario != null) {
-            try {
-                // Cargar el nuevo FXML
-                javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/SecondWindow.fxml"));
-                javafx.scene.Parent root = fxmlLoader.load();
-
-                // Obtener el controlador y pasar el usuario
-                view.SecondWindowController controller = fxmlLoader.getController();
-                controller.setUsuario(usuario);
-                javafx.stage.Stage stage = new javafx.stage.Stage();
-                stage.setScene(new javafx.scene.Scene(root));
-                stage.show();
-
-                // cerrar la ventana actual
-                ((javafx.stage.Stage) label.getScene().getWindow()).close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            label.setText("Invalid credentials!");
-        }
     }
 
     @Override
