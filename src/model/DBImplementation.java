@@ -86,13 +86,13 @@ public class DBImplementation implements ClassDAO {
                 if (result.next()) {
                     Admin profile_admin = new Admin();
                     profile_admin.setUsername(result.getString("USERNAME"));
-                    profile_admin.setPassword(result.getString("PASSWORD"));
+                    profile_admin.setPassword(result.getString("PASSWORD_"));
                     profile_admin.setEmail(result.getString("EMAIL"));
                     profile_admin.setUserCode(result.getInt("USER_CODE"));
-                    profile_admin.setName(result.getString("NAME"));
+                    profile_admin.setName(result.getString("NAME_"));
                     profile_admin.setTelephone(result.getString("TELEPHONE"));
                     profile_admin.setSurname(result.getString("SURNAME"));
-                    profile_admin.setCurrentAccount(result.getString("CARD_NUMBER"));
+                    profile_admin.setCurrentAccount(result.getString("CURRENT_ACCOUNT"));
                     return profile_admin;
                 } else {
                     System.out.println("Usuario encontrado en la base de datos");
@@ -100,10 +100,10 @@ public class DBImplementation implements ClassDAO {
             } else {
                 User profile_user = new User();
                 profile_user.setUsername(result.getString("USERNAME"));
-                profile_user.setPassword(result.getString("PASSWORD"));
+                profile_user.setPassword(result.getString("PASSWORD_"));
                 profile_user.setEmail(result.getString("EMAIL"));
                 profile_user.setUserCode(result.getInt("USER_CODE"));
-                profile_user.setName(result.getString("NAME"));
+                profile_user.setName(result.getString("NAME_"));
                 profile_user.setTelephone(result.getString("TELEPHONE"));
                 profile_user.setSurname(result.getString("SURNAME"));
                 profile_user.setGender(result.getString("GENDER"));

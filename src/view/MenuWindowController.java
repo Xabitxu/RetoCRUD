@@ -5,8 +5,9 @@
  */
 package view;
 
-import java.awt.Button;
-import java.awt.Label;
+import controller.Controller;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -34,20 +35,36 @@ public class MenuWindowController implements Initializable {
     private Label label_Username;
     @FXML
     private Profile profile;
+    @FXML
+    private Controller cont;
 
-    public MenuWindowController(Button Button_Delete, Button Button_Modify, Button Button_LogOut, Label label_Username, Profile profile) {
+    
+    public MenuWindowController() {
+    }
+    
+
+    public MenuWindowController(Button Button_Delete, Button Button_Modify, Button Button_LogOut, Label label_Username, Profile profile, Controller cont) {
         this.Button_Delete = Button_Delete;
         this.Button_Modify = Button_Modify;
         this.Button_LogOut = Button_LogOut;
         this.label_Username = label_Username;
         this.profile = profile;
+        this.cont = cont;
     }
 
     public void setUsuario(Profile profile) {
         this.profile = profile;
         label_Username.setText(profile.getUsername());
     }
-    
+
+    public Controller getCont() {
+        return cont;
+    }
+
+    public void setCont(Controller cont) {
+        this.cont = cont;
+    }
+       
     
 
     @FXML
