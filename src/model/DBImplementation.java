@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.ConnectionPool;
 
 /**
  * Implementation of ClassDAO using database operations. Handles all database
@@ -48,8 +51,9 @@ public class DBImplementation implements ClassDAO {
     /**
      * Opens a database connection.
      */
-    private void openConnection() {       
-        try (Connection con = ConnectionPool.getDataSource().getConnection()) {
+    private void openConnection() {
+        try {
+            this.con = ConnectionPool.getDataSource().getConnection();
             System.out.println("Conexión abierta correctamente.");
         } catch (SQLException e) {
             System.out.println("Error al abrir la conexión con la BD:");
@@ -202,6 +206,11 @@ public class DBImplementation implements ClassDAO {
                 stmt.close();
             }
             if (con != null) {
+                try {
+                    Thread.sleep(30_000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(DBImplementation.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 con.close();
             }
         } catch (SQLException e) {
@@ -240,6 +249,11 @@ public class DBImplementation implements ClassDAO {
                 stmt.close();
             }
             if (con != null) {
+                try {
+                    Thread.sleep(30_000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(DBImplementation.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 con.close();
             }
         } catch (SQLException e) {
