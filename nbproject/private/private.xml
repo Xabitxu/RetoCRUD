@@ -5,6 +5,7 @@
         <group>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/model/configClass.properties</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/MenuWindow.fxml</file>
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/model/DBImplementation.java</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/model/ConnectionPool.java</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/ModifyWindow.fxml</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/MenuWindowController.java</file>

@@ -9,29 +9,39 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.Duration;
+import javax.sql.DataSource;
 
 public class ConnectionPool {
-    // Instancia única del pool
+
     private static BasicDataSource dataSource;
-    // Configuración estática del pool
-    static {
-        dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/crud");
-        dataSource.setUsername("usuario");
-        dataSource.setPassword("contraseña");
     
-        // Parámetros del pool
-        dataSource.setInitialSize(5);      // Conexiones iniciales
-        dataSource.setMaxTotal(10);        // Máximo total de conexiones
-        dataSource.setMinIdle(2);          // Mínimo de conexiones inactivas
-        dataSource.setMaxIdle(5);          // Máximo de conexiones inactivas
-        dataSource.setMaxWaitMillis(10000); // Tiempo máximo para esperar una conexión
+    private static final String DB = "crud";
+    private static final String URL = "jdbc:mysql://localhost:3306/" + DB + "?useSSL=false&serverTimezone=UTC";
+    private static final String USER = "root";
+    private static final String PASS = "";
+
+    // Configuración del pool
+    private static void inicializaDataSource() {
+        dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl(URL);
+        dataSource.setUsername(USER);
+        dataSource.setPassword(PASS);
+        
+        // Configura el pool
+        dataSource.setInitialSize(3);  // conexiones iniciales
+        dataSource.setMaxTotal(10);    // máximo de conexiones
+        dataSource.setMaxWait(Duration.ofSeconds(10)); // espera máxima para obtener una conexión
     }
 
+    // Constructor estático: solo se inicializa una vez
+    static {
+        inicializaDataSource();
+    }
 
-    // Método para obtener una conexión
-    public static Connection getConnection() throws Exception {
-        return dataSource.getConnection();
+    // Método público para obtener el DataSource
+    public static DataSource getDataSource() {
+        return dataSource;
     }
 }
-
