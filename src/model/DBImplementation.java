@@ -48,13 +48,11 @@ public class DBImplementation implements ClassDAO {
     /**
      * Opens a database connection.
      */
-    private void openConnection() {
-        try {
-            con = DriverManager.getConnection(urlDB, this.userDB, this.passwordDB);
+    private void openConnection() {       
+        try (Connection con = ConnectionPool.getDataSource().getConnection()) {
+            System.out.println("Conexión abierta correctamente.");
         } catch (SQLException e) {
-            System.out.println("Error trying to open the DB");
-            e.printStackTrace();
-        } catch (Exception e) {
+            System.out.println("Error al abrir la conexión con la BD:");
             e.printStackTrace();
         }
     }
