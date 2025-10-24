@@ -8,12 +8,18 @@ package view;
 import controller.Controller;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.stage.Stage;
+import model.Admin;
 import model.Profile;
+import model.User;
 
 /**
  * FXML Controller class
@@ -69,17 +75,46 @@ public class MenuWindowController implements Initializable {
 
     @FXML
     private void handleButtonAction(ActionEvent event) {
-        Object source = event.getSource();
         Button sourceButton = (Button) event.getSource();
-        if (source == Button_Delete) {
+        
+        if (sourceButton == Button_Delete) {
         }
-        if (source == Button_Modify) {
+        
+        if (sourceButton == Button_Modify) {
         }
-        if (source == Button_LogOut) {
-        }
-    }
+        
+        if (sourceButton == Button_LogOut) {
+            Boolean logOutSuccess = false;
+            
+            if (profile instanceof User) {
+                logOutSuccess = cont.dropOutUser(profile.getUsername());
+            } else if (profile instanceof Admin) {
+                logOutSuccess = cont.dropOutAdmin(profile.getUsername());
+            }
+            
+            if (logOutSuccess) {
+                System.out.println("Logout exitoso");
+                try {
+                    // Cargar LogInWindow
+                    javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/LogInWindow.fxml"));
+                    javafx.scene.Parent root = fxmlLoader.load();
 
-    @Override
+                    javafx.stage.Stage stage = new javafx.stage.Stage();
+                    stage.setScene(new javafx.scene.Scene(root));
+                    stage.show();
+
+                    // Cerrar ventana 
+                    Stage currentStage = (Stage) Button_LogOut.getScene().getWindow();
+                    currentStage.close();
+
+                } catch (IOException ex) {
+                    Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                System.out.println("Error al salir");
+            }
+        }
+    }    @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }

@@ -33,13 +33,13 @@ public class DBImplementation implements ClassDAO {
 
     // SQL statements
     //Inserts  (New user sing up) Metodos Hechos
-    final String SQLSINGUPPROFILE = "INSERT INTO PROFILE_ (USERNAME, PASSWORD, EMAIL, USER_CODE, NAME_, TELEPHONE, SURNAME) VALUES (?,?,?,?,?,?,?);";
+    final String SQLSINGUPPROFILE = "INSERT INTO PROFILE_ (USERNAME, PASSWORD_, EMAIL, USER_CODE, NAME_, TELEPHONE, SURNAME) VALUES (?,?,?,?,?,?,?);";
     final String SQLSIGNUPUSER = "INSERT INTO USER_ (USERNAME, GENDER, CARD_NUMBER) VALUES (?,?,?);";
     //final String SQLSIGNUPADMIN = "INSERT INTO ADMIN_ (USERNAME, CURRENT_ACCOUNT) VALUES (?,?);";
     //Delete (Drop out)
-    final String SQLDELETEUSER = "DELETE * FROM USER_ WHERE USERNAME = ?;";
-    final String SQLADMIN = "DELETE * FROM ADMIN_ WHERE USERNAME = ?;";
-    final String SLQPROFILE = "DELETE * FROM PROFILE_ WHERE USERNAME = ?;";
+    final String SQLDELETEUSER = "DELETE FROM USER_ WHERE USERNAME = ?;";
+    final String SQLADMIN = "DELETE FROM ADMIN_ WHERE USERNAME = ?;";
+    final String SLQPROFILE = "DELETE FROM PROFILE_ WHERE USERNAME = ?;";
     //Log In Metodos hechos
     final String SLQLOGINUSER = "SELECT p.*, u.GENDER, u.CARD_NUMBER FROM PROFILE_ p JOIN USER_ u ON p.USERNAME= u.USERNAME WHERE u.USERNAME = ? AND p.PASSWORD_ = ?;";
     final String SLQLOGINADMIN = "SELECT p.*, a.CURRENT_ACCOUNT FROM PROFILE_ p JOIN ADMIN_ a ON p.USERNAME= a.USERNAME WHERE a.USERNAME = ? AND p.PASSWORD_ = ?;";
@@ -97,7 +97,7 @@ public class DBImplementation implements ClassDAO {
                     profile_admin.setCurrentAccount(result.getString("CURRENT_ACCOUNT"));
                     return profile_admin;
                 } else {
-                    System.out.println("Usuario encontrado en la base de datos");
+                    System.out.println("Usuario no encontrado en la base de datos");
                 }
             } else {
                 User profile_user = new User();
@@ -143,14 +143,14 @@ public class DBImplementation implements ClassDAO {
             stmt.setString(5, name);
             stmt.setString(6, telephone);
             stmt.setString(7, surname);
-            ResultSet result = stmt.executeQuery();
-            if (result.next()) {
+            int resultProfile = stmt.executeUpdate();
+            if (resultProfile > 0) {
                 stmt = con.prepareStatement(SQLSIGNUPUSER);
                 stmt.setString(1, username);
                 stmt.setString(2, gender);
                 stmt.setString(3, cardNumber);
-                result = stmt.executeQuery();
-                if (result.next()) {
+                int resultUser = stmt.executeUpdate();
+                if (resultUser > 0) {
                     return true;
                 } else {
                     return false;
@@ -183,12 +183,12 @@ public class DBImplementation implements ClassDAO {
         try {
             stmt = con.prepareStatement(SQLDELETEUSER);
             stmt.setString(1, username);
-            ResultSet result = stmt.executeQuery();
-            if (result.next()) {
+            int resultUser = stmt.executeUpdate();
+            if (resultUser > 0) {
                 stmt = con.prepareStatement(SLQPROFILE);
                 stmt.setString(1, username);
-                result = stmt.executeQuery();
-                if (result.next()) {
+                int resultProfile = stmt.executeUpdate();
+                if (resultProfile > 0) {
                     return true;
                 } else {
                     return false;
@@ -226,12 +226,12 @@ public class DBImplementation implements ClassDAO {
         try {
             stmt = con.prepareStatement(SQLADMIN);
             stmt.setString(1, username);
-            ResultSet result = stmt.executeQuery();
-            if (result.next()) {
+            int resultAdmin = stmt.executeUpdate();
+            if (resultAdmin > 0) {
                 stmt = con.prepareStatement(SLQPROFILE);
                 stmt.setString(1, username);
-                result = stmt.executeQuery();
-                if (result.next()) {
+                int resultProfile = stmt.executeUpdate();
+                if (resultProfile > 0) {
                     return true;
                 } else {
                     return false;

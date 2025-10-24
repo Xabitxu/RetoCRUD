@@ -28,62 +28,81 @@ import model.Profile;
  */
 public class LogInWindowController implements Initializable {
 
-    /**
-     * Initializes the controller class.
-     */
-    @FXML
-    private TextField TextField_Username;
-    @FXML
-    private PasswordField PasswordField_Password;
-    @FXML
-    private Button Button_LogIn;
-    @FXML
-    private Button Button_SignUp;
+	/**
+	 * Initializes the controller class.
+	 */
+	@FXML
+	private TextField TextField_Username;
+	@FXML
+	private PasswordField PasswordField_Password;
+	@FXML
+	private Button Button_LogIn;
+	@FXML
+	private Button Button_SignUp;
 
-    private Controller cont = new Controller(new DBImplementation());
+	private Controller cont = new Controller(new DBImplementation());
 
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-        //Object source = event.getSource();
-        Button sourceButton = (Button) event.getSource();
-        String username = TextField_Username.getText();
-        String password = PasswordField_Password.getText();
+	@FXML
+	private void handleButtonAction(ActionEvent event) {
+		//Object source = event.getSource();
+		Button sourceButton = (Button) event.getSource();
+		String username = TextField_Username.getText();
+		String password = PasswordField_Password.getText();
 
-        if (sourceButton == Button_LogIn) {
-            Profile profile = cont.logIn(username, password);
-            if (profile != null) {
-                try {
-                    javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/MenuWindow.fxml"));
-                    javafx.scene.Parent root = fxmlLoader.load();
+		if (sourceButton == Button_LogIn) {
+			Profile profile = cont.logIn(username, password);
+			if (profile != null) {
+				try {
+					javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/MenuWindow.fxml"));
+					javafx.scene.Parent root = fxmlLoader.load();
 
-                    view.MenuWindowController controllerWindow = fxmlLoader.getController();
-                    //Generar un set usuario para poder tenero ahi y usarlo
-                    controllerWindow.setUsuario(profile);
-                    controllerWindow.setCont(cont);
-                    javafx.stage.Stage stage = new javafx.stage.Stage();
-                    stage.setScene(new javafx.scene.Scene(root));
-                    stage.show();
-                    Stage currentStage = (Stage) Button_LogIn.getScene().getWindow();
-                    currentStage.close();
+					view.MenuWindowController controllerWindow = fxmlLoader.getController();
+					// Generar un set usuario para poder tenerlo ahi y usarlo
+					controllerWindow.setUsuario(profile);
+					controllerWindow.setCont(cont);
 
-                } catch (IOException ex) {
-                    Logger.getLogger(LogInWindowController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+					javafx.stage.Stage stage = new javafx.stage.Stage();
+					stage.setScene(new javafx.scene.Scene(root));
+					stage.show();
+                    // Cerrar ventana
+					Stage currentStage = (Stage) Button_LogIn.getScene().getWindow();
+					currentStage.close();
 
-            } else {
-                System.out.println("No esta");
-            }
+				} catch (IOException ex) {
+					Logger.getLogger(LogInWindowController.class.getName()).log(Level.SEVERE, null, ex);
+				}
 
-        }
-        if (sourceButton == Button_SignUp) {
+			} else {
+				System.out.println("No esta");
+			}
 
-        }
+		}
+		if (sourceButton == Button_SignUp) {
+			try {
+				javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/SignUpWindow.fxml"));
+				javafx.scene.Parent root = fxmlLoader.load();
 
-    }
+				view.SignUpWindowController controllerWindow = fxmlLoader.getController();
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }
+				// Nueva ventana
+				javafx.stage.Stage stage = new javafx.stage.Stage();
+				stage.setScene(new javafx.scene.Scene(root));
+				stage.show();
+
+				// Cerrar ventana 
+				Stage currentStage = (Stage) Button_SignUp.getScene().getWindow();
+				currentStage.close();
+
+			} catch (IOException ex) {
+				Logger.getLogger(LogInWindowController.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+
+	}
+
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		// TODO
+	}
 
 }
