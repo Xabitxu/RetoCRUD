@@ -2,14 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/model/configClass.properties</file>
-            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/MenuWindow.fxml</file>
-            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/model/DBImplementation.java</file>
-            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/model/ConnectionPool.java</file>
-            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/ModifyWindow.fxml</file>
-            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/MenuWindowController.java</file>
-            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/ModifyWindowController.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
