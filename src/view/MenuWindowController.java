@@ -6,13 +6,21 @@
 package view;
 
 import controller.Controller;
+import java.io.IOException;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import model.Profile;
 
 /**
@@ -38,10 +46,8 @@ public class MenuWindowController implements Initializable {
     @FXML
     private Controller cont;
 
-    
     public MenuWindowController() {
     }
-    
 
     public MenuWindowController(Button Button_Delete, Button Button_Modify, Button Button_LogOut, Label label_Username, Profile profile, Controller cont) {
         this.Button_Delete = Button_Delete;
@@ -64,8 +70,6 @@ public class MenuWindowController implements Initializable {
     public void setCont(Controller cont) {
         this.cont = cont;
     }
-       
-    
 
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -73,10 +77,31 @@ public class MenuWindowController implements Initializable {
         Button sourceButton = (Button) event.getSource();
         if (source == Button_Delete) {
         }
-        if (source == Button_Modify) {
+    }
+
+    @FXML
+    private void modifyVentana(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/ModifyWindow.fxml"));
+            Parent root = fxmlLoader.load();
+            
+            Stage stage = new Stage();        // Nueva ventana
+            stage.setTitle("Modify");
+            stage.setScene(new Scene(root));
+            stage.show();
+            view.ModifyWindowController controllerWindow = fxmlLoader.getController();
+            controllerWindow.setCont(cont);
+            Stage currentStage = (Stage) Button_Modify.getScene().getWindow();
+            currentStage.close();
+        } catch (IOException ex) {
+            Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (source == Button_LogOut) {
-        }
+    }
+
+    @FXML
+    private void cerrarVentana(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 
     @Override

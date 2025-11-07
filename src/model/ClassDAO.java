@@ -15,5 +15,6 @@ public interface ClassDAO {
             String telephone, String surname);
     public Boolean dropOutUser(String username);
     public Boolean dropOutAdmin(String username);
+    public Boolean modificarUser ();
 
 }

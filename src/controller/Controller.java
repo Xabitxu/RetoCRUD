@@ -37,4 +37,8 @@ public class Controller {
     public Boolean dropOutAdmin(String username) {
         return dao.dropOutAdmin(username);
     }
+
+    public Boolean modificarUser() {
+        return dao.modificarUser();
+    }
 }

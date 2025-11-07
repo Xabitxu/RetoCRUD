@@ -25,26 +25,26 @@
       <Label layoutX="120.0" layoutY="208.0" prefHeight="17.0" prefWidth="43.0" text="Gender" />
       <Label layoutX="95.0" layoutY="254.0" prefHeight="17.0" prefWidth="80.0" text="New Password" />
       <Label layoutX="72.0" layoutY="303.0" prefHeight="17.0" prefWidth="125.0" text="Confirm New Password" />
-      <Button layoutX="17.0" layoutY="362.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="89.0" style="-fx-background-color: A7C4E5; -fx-border-color: #000000;" text="Cancel" />
-      <Button layoutX="157.0" layoutY="362.0" mnemonicParsing="false" style="-fx-background-color: A7C4E5; -fx-border-color: #000000;" text="Save changes" />
-      <TextField layoutX="101.0" layoutY="44.0" prefHeight="25.0" prefWidth="155.0" />
-      <TextField layoutX="101.0" layoutY="76.0" prefHeight="25.0" prefWidth="155.0" promptText="Insert your new email" />
-      <TextField layoutX="102.0" layoutY="110.0" prefHeight="25.0" prefWidth="155.0" promptText="Insert your new name" />
-      <TextField layoutX="103.0" layoutY="143.0" prefHeight="25.0" prefWidth="155.0" promptText="Insert your new surname" />
-      <TextField layoutX="103.0" layoutY="175.0" prefHeight="25.0" prefWidth="155.0" promptText="Insert your new telephone" />
-      <PasswordField layoutX="62.0" layoutY="272.0" prefHeight="17.0" prefWidth="145.0" />
-      <PasswordField layoutX="60.0" layoutY="321.0" />
-      <RadioButton layoutX="42.0" layoutY="232.0" mnemonicParsing="false" text="Man">
+      <Button fx:id="Button_Cancel" layoutX="17.0" layoutY="362.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="89.0" style="-fx-background-color: A7C4E5; -fx-border-color: #000000;" text="Cancel" onAction="#cancel"/>
+      <Button fx:id="Button_SaveChanges" layoutX="157.0" layoutY="362.0" mnemonicParsing="false" style="-fx-background-color: A7C4E5; -fx-border-color: #000000;" text="Save changes" onAction="#save"/>
+      <TextField fx:id="TextField_Username" layoutX="101.0" layoutY="44.0" prefHeight="25.0" prefWidth="155.0" />
+      <TextField fx:id="TextField_Email" layoutX="101.0" layoutY="76.0" prefHeight="25.0" prefWidth="155.0" promptText="Insert your new email" />
+      <TextField fx:id="TextField_Name" layoutX="102.0" layoutY="110.0" prefHeight="25.0" prefWidth="155.0" promptText="Insert your new name" />
+      <TextField fx:id="TextField_Surname" layoutX="103.0" layoutY="143.0" prefHeight="25.0" prefWidth="155.0" promptText="Insert your new surname" />
+      <TextField fx:id="TextField_Telephone" layoutX="103.0" layoutY="175.0" prefHeight="25.0" prefWidth="155.0" promptText="Insert your new telephone" />
+      <PasswordField fx:id="TextField_NewPass" layoutX="62.0" layoutY="272.0" prefHeight="17.0" prefWidth="145.0" />
+      <PasswordField fx:id="TextField_CNewPass" layoutX="60.0" layoutY="321.0" />
+      <RadioButton fx:id="RadioButton_Man" layoutX="42.0" layoutY="232.0" mnemonicParsing="false" text="Man">
          <font>
             <Font size="10.0" />
          </font>
       </RadioButton>
-      <RadioButton layoutX="105.0" layoutY="232.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="59.0" text="Woman">
+      <RadioButton fx:id="RadioButton_Woman" layoutX="105.0" layoutY="232.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="59.0" text="Woman">
          <font>
             <Font size="10.0" />
          </font>
       </RadioButton>
-      <RadioButton layoutX="187.0" layoutY="232.0" mnemonicParsing="false" text="Other">
+      <RadioButton fx:id="RadioButton_Other" layoutX="187.0" layoutY="232.0" mnemonicParsing="false" text="Other">
          <font>
             <Font size="10.0" />
          </font>
