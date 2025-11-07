@@ -5,9 +5,33 @@
  */
 package view;
 
+import controller.Controller;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ToggleGroup;
+
+import exception.passwordequalspassword;
+
+import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
+import javafx.stage.Stage;
+import model.DBImplementation;
+import model.Profile;
 
 /**
  * FXML Controller class
@@ -16,12 +40,105 @@ import javafx.fxml.Initializable;
  */
 public class SignUpWindowController implements Initializable {
 
-	/**
-	 * Initializes the controller class.
-	 */
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {
-		// TODO
-	}	
-	
+    /**
+     * Initializes the controller class.
+     */
+    @FXML
+    private TextField textFieldEmail;
+    @FXML
+    private TextField textFieldName;
+    @FXML
+    private TextField textFieldSurname;
+    @FXML
+    private TextField textFieldTelephone;
+    @FXML
+    private TextField textFieldCardN;
+    @FXML
+    private TextField textFieldPassword;
+    @FXML
+    private TextField textFieldCPassword;
+    @FXML
+    private TextField textFieldUsername;
+    @FXML
+    private RadioButton rButtonM;
+    @FXML
+    private RadioButton rButtonW;
+    @FXML
+    private RadioButton rButtonO;
+    @FXML
+    private Button buttonSignUp;
+    @FXML
+    private Button buttonLogIn;
+    private Controller cont;
+
+    private ToggleGroup grupOp;
+
+    public void setCont(Controller cont) {
+        this.cont = cont;
+    }
+    
+
+    public SignUpWindowController() {
+    }
+    
+
+    @FXML
+    private void handleButtonAction(ActionEvent event) throws passwordequalspassword {
+        Button sourceButton = (Button) event.getSource();
+        String email = textFieldEmail.getText();
+        String name = textFieldName.getText();
+        String surname = textFieldSurname.getText();
+        String telephone = textFieldTelephone.getText();
+        String cardN = textFieldCardN.getText();
+        String pass = textFieldPassword.getText();
+        String passC = textFieldCPassword.getText();
+        String username = textFieldUsername.getText();
+        String gender = null;
+        if (rButtonM.isSelected()) {
+            gender = "Man";
+        } else {
+            if (rButtonW.isSelected()) {
+                gender = "Woman";
+            } else {
+                if (rButtonO.isSelected()) {
+                    gender = "Other";
+                }
+            }
+        }
+        if (sourceButton == buttonSignUp) {
+            if (!pass.equals(passC)) {
+                throw new passwordequalspassword("No son iguales las contraseñas");
+            } else {
+                if(cont.signUp(gender, cardN, username, pass, email, name, telephone, surname)){
+                    System.out.println("Si");
+                }else{
+                System.out.println("no");}
+            }
+        }
+        if (sourceButton == buttonLogIn) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/SLogInWindow.fxml"));
+                Parent root = fxmlLoader.load();
+
+                Stage stage = new Stage();        // Nueva ventana
+                stage.setTitle("Log In");
+                stage.setScene(new Scene(root));
+                stage.show();
+                view.LogInWindowController controllerWindow = fxmlLoader.getController();
+                Stage currentStage = (Stage) buttonLogIn.getScene().getWindow();
+                currentStage.close();
+            } catch (IOException ex) {
+                Logger.getLogger(LogInWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        grupOp = new ToggleGroup();
+        rButtonM.setToggleGroup(grupOp);
+        rButtonW.setToggleGroup(grupOp);
+        rButtonO.setToggleGroup(grupOp);
+    }
+
 }

@@ -17,9 +17,9 @@ public class ConnectionPool {
     private static BasicDataSource dataSource;
     
     private static final String DB = "crud";
-    private static final String URL = "jdbc:mysql://localhost:3306/" + DB + "?useSSL=false&serverTimezone=UTC";
+    private static final String URL = "jdbc:mysql://localhost:3306/" + DB + "?serverTimezone=UTC&useSSL=false";
     private static final String USER = "root";
-    private static final String PASS = "";
+    private static final String PASS = "root";
 
     // Configuración del pool
     private static void inicializaDataSource() {

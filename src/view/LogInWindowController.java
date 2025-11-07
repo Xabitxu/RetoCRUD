@@ -15,7 +15,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import model.DBImplementation;
@@ -76,6 +79,22 @@ public class LogInWindowController implements Initializable {
 
         }
         if (sourceButton == Button_SignUp) {
+
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/SignUpWindow.fxml"));
+                Parent root = fxmlLoader.load();
+               
+                Stage stage = new Stage();        // Nueva ventana
+                stage.setTitle("SignUp");
+                stage.setScene(new Scene(root));
+                stage.show();
+                view.SignUpWindowController controllerWindow = fxmlLoader.getController();
+                controllerWindow.setCont(cont);
+                Stage currentStage = (Stage) Button_SignUp.getScene().getWindow();
+                currentStage.close();
+            } catch (IOException ex) {
+                Logger.getLogger(LogInWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
         }
 

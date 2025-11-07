@@ -33,7 +33,7 @@ public class DBImplementation implements ClassDAO {
 
     // SQL statements
     //Inserts  (New user sing up) Metodos Hechos
-    final String SQLSINGUPPROFILE = "INSERT INTO PROFILE_ (USERNAME, PASSWORD, EMAIL, USER_CODE, NAME_, TELEPHONE, SURNAME) VALUES (?,?,?,?,?,?,?);";
+    final String SQLSINGUPPROFILE = "INSERT INTO PROFILE_ (USERNAME, PASSWORD_, EMAIL, NAME_, TELEPHONE, SURNAME) VALUES (?,?,?,?,?,?);";
     final String SQLSIGNUPUSER = "INSERT INTO USER_ (USERNAME, GENDER, CARD_NUMBER) VALUES (?,?,?);";
     //final String SQLSIGNUPADMIN = "INSERT INTO ADMIN_ (USERNAME, CURRENT_ACCOUNT) VALUES (?,?);";
     //Delete (Drop out)
@@ -132,18 +132,20 @@ public class DBImplementation implements ClassDAO {
     }
 
     @Override
-    public Boolean signUp(String gender, String cardNumber, String username, String password, String email, int userCode, String name, String telephone, String surname) {
+    public Boolean signUp(String gender, String cardNumber, String username, String password, String email, String name, String telephone, String surname) {
         this.openConnection();
         try {
+            //INSERT INTO PROFILE_ (USERNAME, PASSWORD, EMAIL, NAME_, TELEPHONE, SURNAME) VALUES (?,?,?,?,?,?)
             stmt = con.prepareStatement(SQLSINGUPPROFILE);
             stmt.setString(1, username);
             stmt.setString(2, password);
             stmt.setString(3, email);
-            stmt.setInt(4, userCode);
-            stmt.setString(5, name);
-            stmt.setString(6, telephone);
-            stmt.setString(7, surname);
+            stmt.setString(4, name);
+            stmt.setString(5, telephone);
+            stmt.setString(6, surname);
+            System.out.println("fe");
             ResultSet result = stmt.executeQuery();
+            System.out.println("bien");
             if (result.next()) {
                 stmt = con.prepareStatement(SQLSIGNUPUSER);
                 stmt.setString(1, username);

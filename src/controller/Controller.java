@@ -26,8 +26,8 @@ public class Controller {
     }
 
     public Boolean signUp(String gender, String cardNumber, String username, String password, String email,
-            int userCode, String name, String telephone, String surname) {
-        return dao.signUp(gender, cardNumber, username, password, email, 0, name, telephone, surname);
+            String name, String telephone, String surname) {
+        return dao.signUp(gender, cardNumber, username, password, email, name, telephone, surname);
     }
 
     public Boolean dropOutUser(String username) {

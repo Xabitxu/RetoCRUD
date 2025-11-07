@@ -11,7 +11,7 @@ import java.util.Map;
 public interface ClassDAO {
 
     public Profile logIn(String username, String password);
-    public Boolean signUp(String gender, String cardNumber, String username, String password, String email, int userCode, String name,
+    public Boolean signUp(String gender, String cardNumber, String username, String password, String email, String name,
             String telephone, String surname);
     public Boolean dropOutUser(String username);
     public Boolean dropOutAdmin(String username);
