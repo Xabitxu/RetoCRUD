@@ -82,20 +82,21 @@ public class MenuWindowController implements Initializable {
     @FXML
     private void modifyVentana(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/ModifyWindow.fxml"));
-            Parent root = fxmlLoader.load();
-            
-            Stage stage = new Stage();        // Nueva ventana
-            stage.setTitle("Modify");
-            stage.setScene(new Scene(root));
-            stage.show();
+            javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/ModifyWindow.fxml"));
+            javafx.scene.Parent root = fxmlLoader.load();
+
             view.ModifyWindowController controllerWindow = fxmlLoader.getController();
+            //Generar un set usuario para poder tenero ahi y usarlo
             controllerWindow.setProfile(profile);
             controllerWindow.setCont(cont);
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.show();
             Stage currentStage = (Stage) Button_Modify.getScene().getWindow();
             currentStage.close();
+
         } catch (IOException ex) {
-            Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LogInWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
