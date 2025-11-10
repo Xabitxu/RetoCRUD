@@ -88,7 +88,7 @@ public class MenuWindowController implements Initializable {
             view.ModifyWindowController controllerWindow = fxmlLoader.getController();
             //Generar un set usuario para poder tenero ahi y usarlo
             controllerWindow.setProfile(profile);
-            controllerWindow.setCont(cont);
+            controllerWindow.setCont(this.cont);
             javafx.stage.Stage stage = new javafx.stage.Stage();
             stage.setScene(new javafx.scene.Scene(root));
             stage.show();
@@ -96,7 +96,7 @@ public class MenuWindowController implements Initializable {
             currentStage.close();
 
         } catch (IOException ex) {
-            Logger.getLogger(LogInWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

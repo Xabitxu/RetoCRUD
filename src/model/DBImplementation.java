@@ -146,16 +146,14 @@ public class DBImplementation implements ClassDAO {
             stmt.setString(4, name);
             stmt.setString(5, telephone);
             stmt.setString(6, surname);
-            System.out.println("fe");
-            ResultSet result = stmt.executeQuery();
-            System.out.println("bien");
-            if (result.next()) {
+            int rowsUpdated  = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
                 stmt = con.prepareStatement(SQLSIGNUPUSER);
                 stmt.setString(1, username);
                 stmt.setString(2, gender);
                 stmt.setString(3, cardNumber);
-                result = stmt.executeQuery();
-                if (result.next()) {
+                rowsUpdated  = stmt.executeUpdate();
+                if (rowsUpdated > 0) {
                     return true;
                 } else {
                     return false;
@@ -277,16 +275,17 @@ public class DBImplementation implements ClassDAO {
             stmt.setString(2, email);
             stmt.setString(3, name);
             stmt.setString(4, telephone);
+            System.out.println("El telefono es: "+ telephone);
             stmt.setString(5, surname);
             stmt.setString(6, username);
             
-            ResultSet result = stmt.executeQuery();
-            if (!(result.next())) {
+            int rowsUpdated  = stmt.executeUpdate();
+            if (rowsUpdated < 1) {
                 stmt = con.prepareStatement(SQLMODIFYUSER);
                 stmt.setString(1, gender);
                 stmt.setString(2, username);
-                result = stmt.executeQuery();
-                if (result.next()) {
+                rowsUpdated = stmt.executeUpdate();
+                if (rowsUpdated > 0) {
                     return true;
                 } else {
                     System.out.println("Usuario encontrado en la base de datos");

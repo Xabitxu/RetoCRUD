@@ -18,6 +18,76 @@ public class User extends Profile{
         this.gender = gender;
         this.cardNumber = cardNumber;
     }
+
+    @Override
+    public void setSurname(String surname) {
+        super.setSurname(surname); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setTelephone(String telephone) {
+        super.setTelephone(telephone); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setName(String name) {
+        super.setName(name); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setUserCode(int userCode) {
+        super.setUserCode(userCode); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setEmail(String email) {
+        super.setEmail(email); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setPassword(String password) {
+        super.setPassword(password); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setUsername(String username) {
+        super.setUsername(username); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getSurname() {
+        return super.getSurname(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getTelephone() {
+        return super.getTelephone(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getName() {
+        return super.getName(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getUserCode() {
+        return super.getUserCode(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getEmail() {
+        return super.getEmail(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getPassword() {
+        return super.getPassword(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getUsername() {
+        return super.getUsername(); //To change body of generated methods, choose Tools | Templates.
+    }
   
 
     public User() {

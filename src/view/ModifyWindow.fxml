@@ -25,7 +25,7 @@
       <Label layoutX="120.0" layoutY="208.0" prefHeight="17.0" prefWidth="43.0" text="Gender" />
       <Label layoutX="95.0" layoutY="254.0" prefHeight="17.0" prefWidth="80.0" text="New Password" />
       <Label layoutX="72.0" layoutY="303.0" prefHeight="17.0" prefWidth="125.0" text="Confirm New Password" />
-      <Button fx:id="Button_Cancel" layoutX="17.0" layoutY="362.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="89.0" style="-fx-background-color: A7C4E5; -fx-border-color: #000000;" text="Cancel" />
+      <Button fx:id="Button_Cancel" layoutX="17.0" layoutY="362.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="89.0" style="-fx-background-color: A7C4E5; -fx-border-color: #000000;" text="Cancel" />
       <Button fx:id="Button_SaveChanges" layoutX="157.0" layoutY="362.0" mnemonicParsing="false" onAction="#save" style="-fx-background-color: A7C4E5; -fx-border-color: #000000;" text="Save changes" />
       <TextField fx:id="TextField_Name" layoutX="102.0" layoutY="110.0" prefHeight="25.0" prefWidth="155.0" promptText="Insert your new name" />
       <TextField fx:id="TextField_Surname" layoutX="103.0" layoutY="143.0" prefHeight="25.0" prefWidth="155.0" promptText="Insert your new surname" />

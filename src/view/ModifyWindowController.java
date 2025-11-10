@@ -7,8 +7,11 @@ package view;
 
 import controller.Controller;
 import exception.passwordequalspassword;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,7 +21,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.stage.Stage;
 import model.Profile;
+import model.User;
 
 /**
  * FXML Controller class
@@ -42,16 +47,15 @@ public class ModifyWindowController implements Initializable {
     @FXML
     private TextField TextField_CNewPass;
     @FXML
-    private RadioButton rButtonM;
+    private RadioButton RadioButton_Man;
     @FXML
-    private RadioButton rButtonW;
+    private RadioButton RadioButton_Woman;
     @FXML
-    private RadioButton rButtonO;
+    private RadioButton RadioButton_Other;
     private ToggleGroup grupOp;
     @FXML
     private Button Button_Cancel;
-    @FXML
-    private Button Button_SaveChanges;
+
 
     private Controller cont;
     private Profile profile;
@@ -62,14 +66,9 @@ public class ModifyWindowController implements Initializable {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
-    }
 
-    public ModifyWindowController() {
-        String username = profile.getUsername();
-        LabelUsername.setText(username);
-        String email = profile.getEmail();
-        LabelUsername.setText(email);
-
+        LabelUsername.setText(profile.getUsername());
+        LabelEmail.setText(profile.getEmail());
     }
 
     @FXML
@@ -79,16 +78,16 @@ public class ModifyWindowController implements Initializable {
         String telephone = TextField_Telephone.getText();
         String newPass = TextField_NewPass.getText();
         String cNewPass = TextField_CNewPass.getText();
-        String gender = null;
+        String gender = ((User) profile).getGender();
         String username;
         String email;
-        if (rButtonM.isSelected()) {
+        if (RadioButton_Man.isSelected()) {
             gender = "Man";
         } else {
-            if (rButtonW.isSelected()) {
+            if (RadioButton_Woman.isSelected()) {
                 gender = "Woman";
             } else {
-                if (rButtonO.isSelected()) {
+                if (RadioButton_Other.isSelected()) {
                     gender = "Other";
                 }
             }
@@ -97,19 +96,21 @@ public class ModifyWindowController implements Initializable {
 
         email = profile.getEmail();
 
-        if (name == null) {
+        if (name == null || name.equals("Insert your new name")) {
             name = profile.getName();
         }
-        if (surname == null) {
+        if (surname == null || surname.equals("Insert your new surname")) {
             surname = profile.getSurname();
         }
-        if (telephone == null) {
+        if (telephone.equals("") || telephone.equals("Insert your new telephone")) {
             telephone = profile.getTelephone();
         }
-        if (newPass == null || cNewPass == null) {
+        if (newPass.equals("") || cNewPass.equals("") || newPass.equals("New Password") || cNewPass.equals("Confirm New Password")) {
             newPass = profile.getPassword();
+            cont.modificarUser(newPass, email, name, telephone, surname, username, gender);
         } else {
             if (!newPass.equals(cNewPass)) {
+
                 throw new passwordequalspassword("No son iguales las contraseñas");
             } else {
                 if (cont.modificarUser(newPass, email, name, telephone, surname, username, gender)) {
@@ -118,6 +119,27 @@ public class ModifyWindowController implements Initializable {
                     System.out.println("no");
                 }
             }
+        }
+    }
+
+    @FXML
+    private void cancel() {
+        try {
+            javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/MenuWindow.fxml"));
+            javafx.scene.Parent root = fxmlLoader.load();
+
+            view.MenuWindowController controllerWindow = fxmlLoader.getController();
+            //Generar un set usuario para poder tenero ahi y usarlo
+            controllerWindow.setUsuario(profile);
+            controllerWindow.setCont(this.cont);
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.show();
+            Stage currentStage = (Stage) Button_Cancel.getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException ex) {
+            Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

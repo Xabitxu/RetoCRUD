@@ -76,15 +76,30 @@ public class SignUpWindowController implements Initializable {
     public void setCont(Controller cont) {
         this.cont = cont;
     }
-    
 
     public SignUpWindowController() {
     }
-    
 
     @FXML
-    private void handleButtonAction(ActionEvent event) throws passwordequalspassword {
-        Button sourceButton = (Button) event.getSource();
+    private void login() {
+        try {
+            javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/LogInWindow.fxml"));
+            javafx.scene.Parent root = fxmlLoader.load();
+
+            view.LogInWindowController controllerWindow = fxmlLoader.getController();
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.show();
+            Stage currentStage = (Stage) buttonLogIn.getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException ex) {
+            Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void signup() throws passwordequalspassword {
         String email = textFieldEmail.getText();
         String name = textFieldName.getText();
         String surname = textFieldSurname.getText();
@@ -105,32 +120,33 @@ public class SignUpWindowController implements Initializable {
                 }
             }
         }
-        if (sourceButton == buttonSignUp) {
-            if (!pass.equals(passC)) {
-                throw new passwordequalspassword("No son iguales las contraseñas");
-            } else {
-                if(cont.signUp(gender, cardN, username, pass, email, name, telephone, surname)){
-                    System.out.println("Si");
-                }else{
-                System.out.println("no");}
-            }
-        }
-        if (sourceButton == buttonLogIn) {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/SLogInWindow.fxml"));
-                Parent root = fxmlLoader.load();
 
-                Stage stage = new Stage();        // Nueva ventana
-                stage.setTitle("Log In");
-                stage.setScene(new Scene(root));
-                stage.show();
-                view.LogInWindowController controllerWindow = fxmlLoader.getController();
-                Stage currentStage = (Stage) buttonLogIn.getScene().getWindow();
-                currentStage.close();
-            } catch (IOException ex) {
-                Logger.getLogger(LogInWindowController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        if (!pass.equals(passC)) {
+            throw new passwordequalspassword("No son iguales las contraseñas");
+        } else {
+            if (cont.signUp(gender, cardN, username, pass, email, name, telephone, surname)) {
+                Profile profile = cont.logIn(username, pass);
+                try {
+                    javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/MenuWindow.fxml"));
+                    javafx.scene.Parent root = fxmlLoader.load();
+
+                    view.MenuWindowController controllerWindow = fxmlLoader.getController();
+                    //Generar un set usuario para poder tenero ahi y usarlo
+                    controllerWindow.setUsuario(profile);
+                    controllerWindow.setCont(this.cont);
+                    javafx.stage.Stage stage = new javafx.stage.Stage();
+                    stage.setScene(new javafx.scene.Scene(root));
+                    stage.show();
+                    Stage currentStage = (Stage) buttonSignUp.getScene().getWindow();
+                    currentStage.close();
+
+                } catch (IOException ex) {
+                    Logger.getLogger(SignUpWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } 
         }
+
     }
 
     @Override
