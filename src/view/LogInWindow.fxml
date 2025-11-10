@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -28,5 +29,6 @@
             <Image url="@../images/lock_40dp_5084C1_FILL0_wght400_GRAD0_opsz40.png" />
          </image>
       </ImageView>
+      <Label fx:id="labelIncorrecto" layoutX="11.0" layoutY="315.0" prefHeight="17.0" prefWidth="255.0" textFill="RED" />
    </children>
 </AnchorPane>

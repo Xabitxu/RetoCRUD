@@ -13,12 +13,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import model.DBImplementation;
@@ -42,55 +42,60 @@ public class LogInWindowController implements Initializable {
     private Button Button_LogIn;
     @FXML
     private Button Button_SignUp;
+    @FXML
+    private Label labelIncorrecto;
 
     private Controller cont = new Controller(new DBImplementation());
 
     @FXML
-    private void signUp(){
-                    try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/SignUpWindow.fxml"));
-                Parent root = fxmlLoader.load();
-
-                Stage stage = new Stage();        // Nueva ventana
-                stage.setTitle("SignUp");
-                stage.setScene(new Scene(root));
-                stage.show();
-                view.SignUpWindowController controllerWindow = fxmlLoader.getController();
-                controllerWindow.setCont(cont);
-                Stage currentStage = (Stage) Button_SignUp.getScene().getWindow();
-                currentStage.close();
-            } catch (IOException ex) {
-                Logger.getLogger(LogInWindowController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+    private void signUp() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/SignUpWindow.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();        // Nueva ventana
+            stage.setTitle("SignUp");
+            stage.setScene(new Scene(root));
+            stage.show();
+            view.SignUpWindowController controllerWindow = fxmlLoader.getController();
+            controllerWindow.setCont(cont);
+            Stage currentStage = (Stage) Button_SignUp.getScene().getWindow();
+            currentStage.close();
+        } catch (IOException ex) {
+            Logger.getLogger(LogInWindowController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
     private void logIn() {
         String username = TextField_Username.getText();
         String password = PasswordField_Password.getText();
-
-        Profile profile = cont.logIn(username, password);
-        if (profile != null) {
-            try {
-                javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/MenuWindow.fxml"));
-                javafx.scene.Parent root = fxmlLoader.load();
-
-                view.MenuWindowController controllerWindow = fxmlLoader.getController();
-                //Generar un set usuario para poder tenero ahi y usarlo
-                controllerWindow.setUsuario(profile);
-                controllerWindow.setCont(cont);
-                javafx.stage.Stage stage = new javafx.stage.Stage();
-                stage.setScene(new javafx.scene.Scene(root));
-                stage.show();
-                Stage currentStage = (Stage) Button_LogIn.getScene().getWindow();
-                currentStage.close();
-
-            } catch (IOException ex) {
-                Logger.getLogger(LogInWindowController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+        if (username.equals("") || password.equals("")) {
+            labelIncorrecto.setText("Please fill in both fields.");
         } else {
-            System.out.println("No esta");
+
+            Profile profile = cont.logIn(username, password);
+            if (profile != null) {
+                try {
+                    javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/MenuWindow.fxml"));
+                    javafx.scene.Parent root = fxmlLoader.load();
+
+                    view.MenuWindowController controllerWindow = fxmlLoader.getController();
+                    //Generar un set usuario para poder tenero ahi y usarlo
+                    controllerWindow.setUsuario(profile);
+                    controllerWindow.setCont(cont);
+                    javafx.stage.Stage stage = new javafx.stage.Stage();
+                    stage.setScene(new javafx.scene.Scene(root));
+                    stage.show();
+                    Stage currentStage = (Stage) Button_LogIn.getScene().getWindow();
+                    currentStage.close();
+
+                } catch (IOException ex) {
+                    Logger.getLogger(LogInWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } else {
+                labelIncorrecto.setText("The username and/or password are incorrect.");
+            }
         }
     }
 
