@@ -37,16 +37,16 @@ public class DBImplementation implements ClassDAO {
     final String SQLSIGNUPUSER = "INSERT INTO USER_ (USERNAME, GENDER, CARD_NUMBER) VALUES (?,?,?);";
     //final String SQLSIGNUPADMIN = "INSERT INTO ADMIN_ (USERNAME, CURRENT_ACCOUNT) VALUES (?,?);";
     //Delete (Drop out)
-    final String SQLDELETEUSER = "DELETE * FROM USER_ WHERE USERNAME = ?;";
-    final String SQLADMIN = "DELETE * FROM ADMIN_ WHERE USERNAME = ?;";
-    final String SLQPROFILE = "DELETE * FROM PROFILE_ WHERE USERNAME = ?;";
+    final String SQLDELETEUSER = "DELETE FROM USER_u WHERE USERNAME = ? AND PASSWORD_ = ?;";
+    final String SQLDELETEADMIN = "DELETE * FROM ADMIN_ WHERE USERNAME = ? AND PASSWORD_ = ?;";
+    final String SLQDELETEPROFILE = "DELETE FROM PROFILE_ WHERE USERNAME = ? AND PASSWORD_ = ?;";
     //Log In Metodos hechos
     final String SLQLOGINUSER = "SELECT p.*, u.GENDER, u.CARD_NUMBER FROM PROFILE_ p JOIN USER_ u ON p.USERNAME= u.USERNAME WHERE u.USERNAME = ? AND p.PASSWORD_ = ?;";
     final String SLQLOGINADMIN = "SELECT p.*, a.CURRENT_ACCOUNT FROM PROFILE_ p JOIN ADMIN_ a ON p.USERNAME= a.USERNAME WHERE a.USERNAME = ? AND p.PASSWORD_ = ?;";
-    
+
     final String SQLMODIFYPROFILE = "UPDATE PROFILE_ P SET P.PASSWORD_ = ?, P.EMAIL = ?, P.NAME_ = ?, P.TELEPHONE = ?, P.SURNAME = ? WHERE USERNAME = ?;";
     final String SQLMODIFYUSER = "UPDATE PROFILE_ U SET U.GENDER = ? WHERE USERNAME = ?;";
-    
+
 //
     //TODO falta poner que cuando alguien se conecte y se desconecte la conexion de
     // peticion de la bd tiene que estar 30 seg mas encendida para que coinicidan 2
@@ -146,13 +146,13 @@ public class DBImplementation implements ClassDAO {
             stmt.setString(4, name);
             stmt.setString(5, telephone);
             stmt.setString(6, surname);
-            int rowsUpdated  = stmt.executeUpdate();
+            int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
                 stmt = con.prepareStatement(SQLSIGNUPUSER);
                 stmt.setString(1, username);
                 stmt.setString(2, gender);
                 stmt.setString(3, cardNumber);
-                rowsUpdated  = stmt.executeUpdate();
+                rowsUpdated = stmt.executeUpdate();
                 if (rowsUpdated > 0) {
                     return true;
                 } else {
@@ -181,21 +181,15 @@ public class DBImplementation implements ClassDAO {
     }
 
     @Override
-    public Boolean dropOutUser(String username) {
+    public Boolean dropOutUser(String username, String password) {
         this.openConnection();
         try {
-            stmt = con.prepareStatement(SQLDELETEUSER);
+            stmt = con.prepareStatement(SLQDELETEPROFILE);
             stmt.setString(1, username);
-            ResultSet result = stmt.executeQuery();
-            if (result.next()) {
-                stmt = con.prepareStatement(SLQPROFILE);
-                stmt.setString(1, username);
-                result = stmt.executeQuery();
-                if (result.next()) {
-                    return true;
-                } else {
-                    return false;
-                }
+            stmt.setString(2, password);
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                return true;
             } else {
                 return false;
             }
@@ -224,17 +218,19 @@ public class DBImplementation implements ClassDAO {
     }
 
     @Override
-    public Boolean dropOutAdmin(String username) {
+    public Boolean dropOutAdmin(String username, String password) {
         this.openConnection();
         try {
-            stmt = con.prepareStatement(SQLADMIN);
+            stmt = con.prepareStatement(SQLDELETEUSER);
             stmt.setString(1, username);
-            ResultSet result = stmt.executeQuery();
-            if (result.next()) {
-                stmt = con.prepareStatement(SLQPROFILE);
+            stmt.setString(2, password);
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                stmt = con.prepareStatement(SQLDELETEADMIN);
                 stmt.setString(1, username);
-                result = stmt.executeQuery();
-                if (result.next()) {
+                stmt.setString(2, password);
+                rowsUpdated = stmt.executeUpdate();
+                if (rowsUpdated > 0) {
                     return true;
                 } else {
                     return false;
@@ -275,11 +271,11 @@ public class DBImplementation implements ClassDAO {
             stmt.setString(2, email);
             stmt.setString(3, name);
             stmt.setString(4, telephone);
-            System.out.println("El telefono es: "+ telephone);
+            System.out.println("El telefono es: " + telephone);
             stmt.setString(5, surname);
             stmt.setString(6, username);
-            
-            int rowsUpdated  = stmt.executeUpdate();
+
+            int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated < 1) {
                 stmt = con.prepareStatement(SQLMODIFYUSER);
                 stmt.setString(1, gender);

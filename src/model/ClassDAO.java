@@ -13,8 +13,8 @@ public interface ClassDAO {
     public Profile logIn(String username, String password);
     public Boolean signUp(String gender, String cardNumber, String username, String password, String email, String name,
             String telephone, String surname);
-    public Boolean dropOutUser(String username);
-    public Boolean dropOutAdmin(String username);
+    public Boolean dropOutUser(String username, String password);
+    public Boolean dropOutAdmin(String username, String password);
     public Boolean modificarUser (String password, String email, String name, String telephone, String surname, String username, String gender);
 
 }

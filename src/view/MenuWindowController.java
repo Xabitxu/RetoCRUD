@@ -71,13 +71,6 @@ public class MenuWindowController implements Initializable {
         this.cont = cont;
     }
 
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-        Object source = event.getSource();
-        Button sourceButton = (Button) event.getSource();
-        if (source == Button_Delete) {
-        }
-    }
 
     @FXML
     private void modifyVentana(ActionEvent event) {
@@ -93,6 +86,26 @@ public class MenuWindowController implements Initializable {
             stage.setScene(new javafx.scene.Scene(root));
             stage.show();
             Stage currentStage = (Stage) Button_Modify.getScene().getWindow();
+            currentStage.close();
+
+        } catch (IOException ex) {
+            Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    @FXML
+    private void delete (){
+        try {
+            javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/DeleteAccount.fxml"));
+            javafx.scene.Parent root = fxmlLoader.load();
+
+            view.DeleteAccountController controllerWindow = fxmlLoader.getController();
+            //Generar un set usuario para poder tenero ahi y usarlo
+            controllerWindow.setProfile(profile);
+            controllerWindow.setCont(this.cont);
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.show();
+            Stage currentStage = (Stage) Button_Delete.getScene().getWindow();
             currentStage.close();
 
         } catch (IOException ex) {

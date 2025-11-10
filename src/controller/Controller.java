@@ -30,15 +30,16 @@ public class Controller {
         return dao.signUp(gender, cardNumber, username, password, email, name, telephone, surname);
     }
 
-    public Boolean dropOutUser(String username) {
-        return dao.dropOutUser(username);
+    public Boolean dropOutUser(String username, String password) {
+        return dao.dropOutUser(username, password);
     }
 
-    public Boolean dropOutAdmin(String username) {
-        return dao.dropOutAdmin(username);
+    public Boolean dropOutAdmin(String username, String password) {
+        return dao.dropOutAdmin(username, password);
     }
 
     public Boolean modificarUser(String password, String email, String name, String telephone, String surname, String username, String gender) {
         return dao.modificarUser(password, email, name, telephone, surname, username, gender);
     }
+    
 }
