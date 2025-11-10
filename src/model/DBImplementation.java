@@ -37,8 +37,8 @@ public class DBImplementation implements ClassDAO {
     final String SQLSIGNUPUSER = "INSERT INTO USER_ (USERNAME, GENDER, CARD_NUMBER) VALUES (?,?,?);";
     //final String SQLSIGNUPADMIN = "INSERT INTO ADMIN_ (USERNAME, CURRENT_ACCOUNT) VALUES (?,?);";
     //Delete (Drop out)
-    final String SQLDELETEUSER = "DELETE FROM USER_u WHERE USERNAME = ? AND PASSWORD_ = ?;";
-    final String SQLDELETEADMIN = "DELETE * FROM ADMIN_ WHERE USERNAME = ? AND PASSWORD_ = ?;";
+    //final String SQLDELETEUSER = "DELETE FROM USER_u WHERE USERNAME = ? AND PASSWORD_ = ?;";
+    //final String SQLDELETEADMIN = "DELETE * FROM ADMIN_ WHERE USERNAME = ? AND PASSWORD_ = ?;";
     final String SLQDELETEPROFILE = "DELETE FROM PROFILE_ WHERE USERNAME = ? AND PASSWORD_ = ?;";
     //Log In Metodos hechos
     final String SLQLOGINUSER = "SELECT p.*, u.GENDER, u.CARD_NUMBER FROM PROFILE_ p JOIN USER_ u ON p.USERNAME= u.USERNAME WHERE u.USERNAME = ? AND p.PASSWORD_ = ?;";
@@ -221,24 +221,15 @@ public class DBImplementation implements ClassDAO {
     public Boolean dropOutAdmin(String username, String password) {
         this.openConnection();
         try {
-            stmt = con.prepareStatement(SQLDELETEUSER);
+            stmt = con.prepareStatement(SLQDELETEPROFILE);
             stmt.setString(1, username);
             stmt.setString(2, password);
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
-                stmt = con.prepareStatement(SQLDELETEADMIN);
-                stmt.setString(1, username);
-                stmt.setString(2, password);
-                rowsUpdated = stmt.executeUpdate();
-                if (rowsUpdated > 0) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return true;
             } else {
                 return false;
             }
-
         } catch (SQLException e) {
             System.out.println("Error en la consulta a la base de datos");
             e.printStackTrace();
