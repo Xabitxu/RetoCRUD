@@ -90,6 +90,7 @@ public class MenuWindowController implements Initializable {
             stage.setScene(new Scene(root));
             stage.show();
             view.ModifyWindowController controllerWindow = fxmlLoader.getController();
+            controllerWindow.setProfile(profile);
             controllerWindow.setCont(cont);
             Stage currentStage = (Stage) Button_Modify.getScene().getWindow();
             currentStage.close();

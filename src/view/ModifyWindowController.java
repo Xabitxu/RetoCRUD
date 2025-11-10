@@ -17,6 +17,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import model.Profile;
 
 /**
  * FXML Controller class
@@ -52,20 +53,26 @@ public class ModifyWindowController implements Initializable {
     private Button Button_SaveChanges;
 
     private Controller cont;
+    private Profile profile;
 
     public void setCont(Controller cont) {
         this.cont = cont;
     }
 
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+    
+
     @FXML
     private void save(ActionEvent event) throws passwordequalspassword {
-        String Username = TextField_Username.getText();
-        String Email = TextField_Email.getText();
-        String Name = TextField_Name.getText();
-        String Surname = TextField_Surname.getText();
-        String Telephone = TextField_Telephone.getText();
-        String NewPass = TextField_NewPass.getText();
-        String CNewPass = TextField_CNewPass.getText();
+        String username = TextField_Username.getText();
+        String email = TextField_Email.getText();
+        String name = TextField_Name.getText();
+        String surname = TextField_Surname.getText();
+        String telephone = TextField_Telephone.getText();
+        String newPass = TextField_NewPass.getText();
+        String cNewPass = TextField_CNewPass.getText();
         String gender = null;
         if (rButtonM.isSelected()) {
             gender = "Man";
@@ -78,15 +85,33 @@ public class ModifyWindowController implements Initializable {
                 }
             }
         }
-        if()
-        if (!NewPass.equals(CNewPass)) {
+        if(username == null){
+            username = profile.getUsername();
+        }
+        if(email == null){
+            email = profile.getEmail();
+        }
+        if(name == null){
+            name = profile.getName();
+        }
+        if(surname == null){
+            surname = profile.getSurname();
+        }
+        if(telephone == null){
+            telephone = profile.getTelephone();
+        }
+        if(newPass == null || cNewPass == null){
+            newPass = profile.getPassword();
+        }else{
+        if (!newPass.equals(cNewPass)) {
                 throw new passwordequalspassword("No son iguales las contraseñas");
             } else {
-                if(cont.)){
+                if(cont.modificarUser( newPass, email, name, telephone, surname, username, gender)){
                     System.out.println("Si");
                 }else{
                 System.out.println("no");}
             }
+        }
     }
 
     /**

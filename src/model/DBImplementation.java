@@ -43,8 +43,11 @@ public class DBImplementation implements ClassDAO {
     //Log In Metodos hechos
     final String SLQLOGINUSER = "SELECT p.*, u.GENDER, u.CARD_NUMBER FROM PROFILE_ p JOIN USER_ u ON p.USERNAME= u.USERNAME WHERE u.USERNAME = ? AND p.PASSWORD_ = ?;";
     final String SLQLOGINADMIN = "SELECT p.*, a.CURRENT_ACCOUNT FROM PROFILE_ p JOIN ADMIN_ a ON p.USERNAME= a.USERNAME WHERE a.USERNAME = ? AND p.PASSWORD_ = ?;";
-
-    //
+    
+    final String SQLMODIFYPROFILE = "UPDATE PROFILE_ P SET P.PASSWORD_ = ?, P.EMAIL = ?, P.NAME_ = ?, P.TELEPHONE = ?, P.SURNAME = ? WHERE USERNAME = ?;";
+    final String SQLMODIFYUSER = "UPDATE PROFILE_ U SET U.GENDER = ? WHERE USERNAME = ?;";
+    
+//
     //TODO falta poner que cuando alguien se conecte y se desconecte la conexion de
     // peticion de la bd tiene que estar 30 seg mas encendida para que coinicidan 2
     //peticiones
@@ -263,6 +266,51 @@ public class DBImplementation implements ClassDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public Boolean modificarUser(String password, String email, String name, String telephone, String surname, String username, String gender) {
+        this.openConnection();
+        try {
+            stmt = con.prepareStatement(SQLMODIFYPROFILE);
+            stmt.setString(1, password);
+            stmt.setString(2, email);
+            stmt.setString(3, name);
+            stmt.setString(4, telephone);
+            stmt.setString(5, surname);
+            stmt.setString(6, username);
+            
+            ResultSet result = stmt.executeQuery();
+            if (!(result.next())) {
+                stmt = con.prepareStatement(SQLMODIFYUSER);
+                stmt.setString(1, gender);
+                stmt.setString(2, username);
+                result = stmt.executeQuery();
+                if (result.next()) {
+                    return true;
+                } else {
+                    System.out.println("Usuario encontrado en la base de datos");
+                }
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error en la consulta a la base de datos");
+            e.printStackTrace();
+        }
+        try {
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al cerrar la conexión a la BD");
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
 }
