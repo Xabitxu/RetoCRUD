@@ -55,7 +55,6 @@ public class ModifyWindowController implements Initializable {
     @FXML
     private Button Button_Cancel;
 
-
     private Controller cont;
     private Profile profile;
 
@@ -113,9 +112,23 @@ public class ModifyWindowController implements Initializable {
                 throw new passwordequalspassword("No son iguales las contraseñas");
             } else {
                 if (cont.modificarUser(newPass, email, name, telephone, surname, username, gender)) {
-                    System.out.println("Si");
-                } else {
-                    System.out.println("no");
+                    try {
+                        javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/MenuWindow.fxml"));
+                        javafx.scene.Parent root = fxmlLoader.load();
+
+                        view.MenuWindowController controllerWindow = fxmlLoader.getController();
+                        //Generar un set usuario para poder tenero ahi y usarlo
+                        controllerWindow.setUsuario(profile);
+                        controllerWindow.setCont(this.cont);
+                        javafx.stage.Stage stage = new javafx.stage.Stage();
+                        stage.setScene(new javafx.scene.Scene(root));
+                        stage.show();
+                        Stage currentStage = (Stage) Button_Cancel.getScene().getWindow();
+                        currentStage.close();
+
+                    } catch (IOException ex) {
+                        Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         }

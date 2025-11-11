@@ -5,13 +5,27 @@
  */
 package exception;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
 /**
  *
  * @author Deusto
  */
-public class passwordequalspassword  extends Exception {
-    public passwordequalspassword (String text){
+public class passwordequalspassword extends Exception {
+
+    public passwordequalspassword(String text) {
         super(text);
-}
-    
+        showPopup(text);
+    }
+
+    private void showPopup(String message) {
+        // Crear una alerta de tipo error
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Password error");
+        alert.setHeaderText("Invalid password");
+        alert.setContentText(message);
+
+        alert.showAndWait();
+    }
 }

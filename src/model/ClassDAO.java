@@ -6,6 +6,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 public interface ClassDAO {
@@ -17,4 +18,5 @@ public interface ClassDAO {
     public Boolean dropOutAdmin(String username, String password);
     public Boolean modificarUser (String password, String email, String name, String telephone, String surname, String username, String gender);
 
+    public List comboBoxInsert();
 }

@@ -8,6 +8,7 @@ package model;
 import org.apache.commons.dbcp2.BasicDataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Duration;
 import javax.sql.DataSource;
@@ -22,7 +23,7 @@ public class ConnectionPool {
     private static final String PASS = "root";
 
     // Configuración del pool
-    private static void inicializaDataSource() {
+    static {
         dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl(URL);
@@ -30,18 +31,17 @@ public class ConnectionPool {
         dataSource.setPassword(PASS);
         
         // Configura el pool
-        dataSource.setInitialSize(3);  // conexiones iniciales
-        dataSource.setMaxTotal(10);    // máximo de conexiones
+        dataSource.setInitialSize(5);      // Conexiones iniciales
+        dataSource.setMaxTotal(10);        // Máximo total de conexiones
+        dataSource.setMinIdle(2);          // Mínimo de conexiones inactivas
+        dataSource.setMaxIdle(5);          // Máximo de conexiones inactivas   // máximo de conexiones
         dataSource.setMaxWait(Duration.ofSeconds(10)); // espera máxima para obtener una conexión
     }
 
-    // Constructor estático: solo se inicializa una vez
-    static {
-        inicializaDataSource();
+
+        // Método para obtener una conexión
+    public static Connection getConnection() throws SQLException {
+        return dataSource.getConnection();
     }
 
-    // Método público para obtener el DataSource
-    public static DataSource getDataSource() {
-        return dataSource;
-    }
 }

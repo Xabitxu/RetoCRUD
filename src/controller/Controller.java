@@ -7,6 +7,7 @@ package controller;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import model.ClassDAO;
 import model.DBImplementation;
@@ -41,5 +42,9 @@ public class Controller {
     public Boolean modificarUser(String password, String email, String name, String telephone, String surname, String username, String gender) {
         return dao.modificarUser(password, email, name, telephone, surname, username, gender);
     }
-    
+
+    public List comboBoxInsert() {
+        return dao.comboBoxInsert();
+    }
+
 }

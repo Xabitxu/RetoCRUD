@@ -5,6 +5,8 @@
  */
 package view;
 
+import static com.sun.deploy.util.ReflectionUtil.instanceOf;
+import static com.sun.org.apache.bcel.internal.Repository.instanceOf;
 import controller.Controller;
 import java.io.IOException;
 import javafx.scene.control.Button;
@@ -18,7 +20,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import model.Admin;
 import model.Profile;
+import model.User;
 
 /**
  * FXML Controller class
@@ -68,7 +72,6 @@ public class MenuWindowController implements Initializable {
         this.cont = cont;
     }
 
-
     @FXML
     private void modifyVentana(ActionEvent event) {
         try {
@@ -89,25 +92,50 @@ public class MenuWindowController implements Initializable {
             Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     @FXML
-    private void delete (){
-        try {
-            javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/DeleteAccount.fxml"));
-            javafx.scene.Parent root = fxmlLoader.load();
+    private void delete() {
+        if (this.profile instanceof User) {
 
-            view.DeleteAccountController controllerWindow = fxmlLoader.getController();
-            //Generar un set usuario para poder tenero ahi y usarlo
-            controllerWindow.setProfile(profile);
-            controllerWindow.setCont(this.cont);
-            javafx.stage.Stage stage = new javafx.stage.Stage();
-            stage.setScene(new javafx.scene.Scene(root));
-            stage.show();
-            Stage currentStage = (Stage) Button_Delete.getScene().getWindow();
-            currentStage.close();
+            try {
+                javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/DeleteAccount.fxml"));
+                javafx.scene.Parent root = fxmlLoader.load();
 
-        } catch (IOException ex) {
-            Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                view.DeleteAccountController controllerWindow = fxmlLoader.getController();
+                //Generar un set usuario para poder tenero ahi y usarlo
+                controllerWindow.setProfile(profile);
+                controllerWindow.setCont(this.cont);
+                javafx.stage.Stage stage = new javafx.stage.Stage();
+                stage.setScene(new javafx.scene.Scene(root));
+                stage.show();
+                Stage currentStage = (Stage) Button_Delete.getScene().getWindow();
+                currentStage.close();
+
+            } catch (IOException ex) {
+                Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        if(this.profile instanceof Admin){
+            try {
+                javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/DeleteAccountAdmin.fxml"));
+                javafx.scene.Parent root = fxmlLoader.load();
+
+                view.DeleteAccountAdminController controllerWindow = fxmlLoader.getController();
+                //Generar un set usuario para poder tenero ahi y usarlo
+                controllerWindow.setProfile(profile);
+                controllerWindow.setCont(this.cont);
+                controllerWindow.setComboBoxUser();
+                javafx.stage.Stage stage = new javafx.stage.Stage();
+                stage.setScene(new javafx.scene.Scene(root));
+                stage.show();
+                Stage currentStage = (Stage) Button_Delete.getScene().getWindow();
+                currentStage.close();
+
+            } catch (IOException ex) {
+                Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 
     @FXML
