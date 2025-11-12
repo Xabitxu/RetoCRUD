@@ -16,9 +16,9 @@ import static org.junit.Assert.*;
  *
  * @author acer
  */
-public class ModifyText {
+public class MenuTest {
     
-    public ModifyText() {
+    public MenuTest() {
     }
     
     @BeforeClass

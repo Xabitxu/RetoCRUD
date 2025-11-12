@@ -20,7 +20,7 @@ public class ConnectionPool {
     private static final String DB = "crud";
     private static final String URL = "jdbc:mysql://localhost:3306/" + DB + "?serverTimezone=UTC&useSSL=false";
     private static final String USER = "root";
-    private static final String PASS = "root";
+    private static final String PASS = "";
 
     // Configuración del pool
     static {

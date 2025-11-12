@@ -5,41 +5,87 @@
  */
 package viewText;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
+import java.util.concurrent.TimeoutException;
+import javafx.stage.Stage;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.runners.MethodSorters;
+import static org.testfx.api.FxAssert.verifyThat;
+import org.testfx.api.FxToolkit;
+import org.testfx.framework.junit.ApplicationTest;
+import static org.testfx.matcher.base.NodeMatchers.isDisabled;
+import static org.testfx.matcher.base.NodeMatchers.isEnabled;
+import static org.testfx.matcher.base.NodeMatchers.isVisible;
+import static org.testfx.matcher.control.TextInputControlMatchers.hasText;
 
 /**
- *
- * @author acer
+ * Integration test for LogInWindowController using TestFX. Covers initial
+ * state, button logic, login flow, and SignUp window.
  */
-public class LogInTest {
-    
-    public LogInTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class LogInTest extends ApplicationTest {
+
+    @Override
+    public void stop() {
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    /**
+     * Inicializa la aplicación JavaFX antes de los tests.
+     */
+    @BeforeClass
+    public static void setUpClass() throws TimeoutException {
+        FxToolkit.registerPrimaryStage();
+        FxToolkit.setupApplication(main.Main.class);
+        // Ejemplo: FxToolkit.setupApplication(MyApplication.class);
+    }
+
+    /**
+     * Comprueba el estado inicial de la ventana de login.
+     */
+    @Test
+    public void test1_InitialState() {
+        verifyThat("#TextField_Username", hasText(""));
+        verifyThat("#PasswordField_Password", hasText(""));
+        verifyThat("#Button_LogIn", isDisabled());
+    }
+
+    /**
+     * Comprueba el flujo completo de login: 1. Introduce credenciales
+     * incorrectas → muestra error. 2. Corrige la contraseña → inicia sesión
+     * correctamente.
+     */
+    @Test
+    public void test4_LoginFlow_IncorrectThenCorrect() {
+        // 1️⃣ Usuario y contraseña incorrectos
+        clickOn("#TextField_Username");
+        write("jlopez");
+        clickOn("#PasswordField_Password");
+        write("wrongpass");
+        clickOn("#Button_LogIn");
+
+        // Verifica que aparece mensaje de error
+        verifyThat("#labelIncorrecto", isVisible());
+
+        // 2️⃣ Borrar contraseña y escribir la correcta
+        clickOn("#PasswordField_Password");
+        eraseText(9); // borra "wrongpass"
+        write("pass123");
+
+        // Reintentar login
+        clickOn("#Button_LogIn");
+
+        // Verifica que se abre el menú principal
+        verifyThat("#MenuRoot", isVisible());
+    }
+
+    @Test
+    public void test_SignUpWindow_OpensIndependently() throws TimeoutException {
+        // Reinicia la aplicación para asegurar ventana limpia
+        FxToolkit.cleanupStages();
+        FxToolkit.setupApplication(main.Main.class);
+
+        clickOn("#Button_SignUp");
+        verifyThat("#SignUpRoot", isVisible());
+    }
 }

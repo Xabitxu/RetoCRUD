@@ -16,9 +16,9 @@ import static org.junit.Assert.*;
  *
  * @author acer
  */
-public class SignUpText {
+public class DeleteAccountTest {
     
-    public SignUpText() {
+    public DeleteAccountTest() {
     }
     
     @BeforeClass

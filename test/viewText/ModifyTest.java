@@ -16,9 +16,9 @@ import static org.junit.Assert.*;
  *
  * @author acer
  */
-public class DeleteAccountText {
+public class ModifyTest {
     
-    public DeleteAccountText() {
+    public ModifyTest() {
     }
     
     @BeforeClass
