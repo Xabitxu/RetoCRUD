@@ -5,7 +5,6 @@
  */
 package view;
 
-import static com.sun.deploy.util.ReflectionUtil.instanceOf;
 import static com.sun.org.apache.bcel.internal.Repository.instanceOf;
 import controller.Controller;
 import java.io.IOException;
