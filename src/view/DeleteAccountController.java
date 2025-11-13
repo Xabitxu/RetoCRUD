@@ -149,6 +149,7 @@ public class DeleteAccountController implements Initializable {
                     error.setHeaderText("Incorrect password");
                     error.setContentText("The password is incorrect. Please try again.");
                     error.showAndWait();
+                }
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -157,20 +158,6 @@ public class DeleteAccountController implements Initializable {
                 error.setHeaderText("The account could not be deleted.");
                 error.setContentText(ex.getMessage());
                 error.showAndWait();
-            }
-                javafx.scene.Parent root = fxmlLoader.load();
-
-                view.MenuWindowController controllerWindow = fxmlLoader.getController();
-                controllerWindow.setUsuario(profile);
-                controllerWindow.setCont(cont);
-                javafx.stage.Stage stage = new javafx.stage.Stage();
-                stage.setScene(new javafx.scene.Scene(root));
-                stage.show();
-                Stage currentStage = (Stage) Button_Delete.getScene().getWindow();
-                currentStage.close();
-
-            } catch (IOException ex) {
-                java.util.logging.Logger.getLogger(LogInWindowController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
         }
     }

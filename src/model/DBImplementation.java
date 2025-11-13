@@ -1,20 +1,12 @@
 package model;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import model.ConnectionPool;
 import threads.HiloConnection;
 
 /**
@@ -177,7 +169,33 @@ public class DBImplementation implements ClassDAO {
         boolean success = false;
         PreparedStatement stmtUser = null;
         try {
-            Connection con = waitForConnection(conectionThread);
+            Connection con = waitForConnection(connectionThread);
+            
+            // verificar password
+            String checkPassword = "SELECT PASSWORD_ FROM PROFILE_ WHERE USERNAME = ?";
+            stmt = con.prepareStatement(checkPassword);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                String dbPassword = rs.getString("PASSWORD_");
+                if (!dbPassword.equals(password)) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+            rs.close();
+            stmt.close();
+            
+            // eliminar de USER_ primero
+            String deleteUser = "DELETE FROM USER_ WHERE USERNAME = ?";
+            stmtUser = con.prepareStatement(deleteUser);
+            stmtUser.setString(1, username);
+            stmtUser.executeUpdate();
+            stmtUser.close();
+            
+            // eliminar de PROFILE_
             stmt = con.prepareStatement(SLQDELETEPROFILE);
             stmt.setString(1, username);
             stmt.setString(2, password);
@@ -190,7 +208,10 @@ public class DBImplementation implements ClassDAO {
                 if (stmt != null) {
                     stmt.close();
                 }
-                conectionThread.releaseConnection();
+                if (stmtUser != null) {
+                    stmtUser.close();
+                }
+                connectionThread.releaseConnection();
             } catch (SQLException e) {
                 System.out.println("Error closing DB connection after deleting user");
                 e.printStackTrace();
@@ -200,35 +221,69 @@ public class DBImplementation implements ClassDAO {
     }
 
     /**
-     * Deletes an admin from the database.
+     * Deletes a user selected by admin from the database.
      */
     @Override
-    public Boolean dropOutAdmin(String username, String password) {
-        HiloConnection conectionThread = new HiloConnection(30);
-        conectionThread.start();
+    public Boolean dropOutAdmin(String usernameToDelete, String adminUsername, String adminPassword) {
+        HiloConnection connectionThread = new HiloConnection(30);
+        connectionThread.start();
         boolean success = false;
         PreparedStatement stmtDeleteUser = null;
         PreparedStatement stmtDeleteAdmin = null;
         try {
-            Connection con = waitForConnection(conectionThread);
-            stmt = con.prepareStatement(SLQDELETEPROFILEADMIN);
-            stmt.setString(1, username);
-            stmt.setString(2, password);
-            int rowsUpdated = stmt.executeUpdate();
-            if (rowsUpdated > 0) {
-                success = true;
+            Connection con = waitForConnection(connectionThread);
+            
+            // verificar password del admin logueado
+            String checkAdminPassword = "SELECT PASSWORD_ FROM PROFILE_ WHERE USERNAME = ?";
+            stmt = con.prepareStatement(checkAdminPassword);
+            stmt.setString(1, adminUsername);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                String dbPassword = rs.getString("PASSWORD_");
+                if (!dbPassword.equals(adminPassword)) {
+                    return false;
+                }
             } else {
-                success = false;
+                return false;
             }
-        } catch (SQLException e) {
-            System.out.println("Error en la consulta a la base de datos");
+            rs.close();
+            stmt.close();
+            
+            // eliminar de USER_ si existe
+            String deleteUser = "DELETE FROM USER_ WHERE USERNAME = ?";
+            stmtDeleteUser = con.prepareStatement(deleteUser);
+            stmtDeleteUser.setString(1, usernameToDelete);
+            stmtDeleteUser.executeUpdate();
+            stmtDeleteUser.close();
+            
+            // eliminar de ADMIN_ si existe
+            String deleteAdmin = "DELETE FROM ADMIN_ WHERE USERNAME = ?";
+            stmtDeleteAdmin = con.prepareStatement(deleteAdmin);
+            stmtDeleteAdmin.setString(1, usernameToDelete);
+            stmtDeleteAdmin.executeUpdate();
+            stmtDeleteAdmin.close();
+            
+            // eliminar de PROFILE_
+            String deleteProfile = "DELETE FROM PROFILE_ WHERE USERNAME = ?";
+            stmt = con.prepareStatement(deleteProfile);
+            stmt.setString(1, usernameToDelete);
+            success = stmt.executeUpdate() > 0;
+        } catch (SQLException | InterruptedException e) {
+            System.out.println("Database error on deleting admin");
             e.printStackTrace();
         } finally {
             try {
                 if (stmt != null) {
                     stmt.close();
                 }
-                conectionThread.releaseConnection();
+                if (stmtDeleteUser != null) {
+                    stmtDeleteUser.close();
+                }
+                if (stmtDeleteAdmin != null) {
+                    stmtDeleteAdmin.close();
+                }
+                connectionThread.releaseConnection();
             } catch (SQLException e) {
                 System.out.println("Error closing DB connection after deleting admin");
                 e.printStackTrace();
@@ -245,9 +300,12 @@ public class DBImplementation implements ClassDAO {
         HiloConnection connectionThread = new HiloConnection(30);
         connectionThread.start();
         boolean success = false;
+        PreparedStatement stmtUser = null;
 
         try {
-            Connection con = waitForConnection(conectionThread);
+            Connection con = waitForConnection(connectionThread);
+            
+            // actualizar PROFILE_
             stmt = con.prepareStatement(SQLMODIFYPROFILE);
             stmt.setString(1, password);
             stmt.setString(2, email);
@@ -255,18 +313,19 @@ public class DBImplementation implements ClassDAO {
             stmt.setString(4, telephone);
             stmt.setString(5, surname);
             stmt.setString(6, username);
+
             int rowsUpdated = stmt.executeUpdate();
-            if (rowsUpdated < 1) {
-                stmt = con.prepareStatement(SQLMODIFYUSER);
-                stmt.setString(1, gender);
-                stmt.setString(2, username);
-                rowsUpdated = stmt.executeUpdate();
-                if (rowsUpdated > 0) {
-                    success = true;
-                } else {
-                    System.out.println("Usuario encontrado en la base de datos");
-                }
+            if (rowsUpdated > 0) {
+                // actualizar USER_ si existe
+                stmtUser = con.prepareStatement(SQLMODIFYUSER);
+                stmtUser.setString(1, gender);
+                stmtUser.setString(2, username);
+                stmtUser.executeUpdate();
+                stmtUser.close();
+                
+                success = true;
             } else {
+                System.out.println("Usuario no encontrado en la base de datos");
                 success = false;
             }
         } catch (SQLException | InterruptedException e) {
@@ -277,7 +336,10 @@ public class DBImplementation implements ClassDAO {
                 if (stmt != null) {
                     stmt.close();
                 }
-                conectionThread.releaseConnection();
+                if (stmtUser != null) {
+                    stmtUser.close();
+                }
+                connectionThread.releaseConnection();
 
             } catch (SQLException e) {
                 System.out.println("Error closing DB connection after modifying user");
@@ -294,7 +356,7 @@ public class DBImplementation implements ClassDAO {
      */
     @Override
     public List comboBoxInsert() {
-        ObservableList<String> listaUsuarios = FXCollections.observableArrayList();
+        List<String> listaUsuarios = new ArrayList<>();
         Connection con = null;
         try {
             con = ConnectionPool.getConnection();

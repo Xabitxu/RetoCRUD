@@ -80,8 +80,19 @@ public class ModifyWindowController implements Initializable {
         }
         
         username = profile.getUsername();
+        email = profile.getEmail();
 
         if (name == null || name.isEmpty() || name.equals("Insert your new name")) {
+            name = profile.getName();
+        }
+        if (surname == null || surname.isEmpty() || surname.equals("Insert your new surname")) {
+            surname = profile.getSurname();
+        }
+        if (telephone == null || telephone.isEmpty() || telephone.equals("Insert your new telephone")) {
+            telephone = profile.getTelephone();
+        }
+        if (newPass == null || newPass.isEmpty() || cNewPass == null || cNewPass.isEmpty() || 
+            newPass.equals("New Password") || cNewPass.equals("Confirm New Password")) {
             newPass = profile.getPassword();
             
             Boolean success = cont.modificarUser(newPass, email, name, telephone, surname, username, gender);

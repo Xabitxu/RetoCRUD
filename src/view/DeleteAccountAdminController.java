@@ -7,6 +7,7 @@ package view;
 
 import controller.Controller;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,13 +20,8 @@ import javafx.scene.control.TextField;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.fxml.FXML;
 import javafx.stage.Stage;
 import model.Profile;
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.collections.ObservableList;
-import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
@@ -60,8 +56,9 @@ public class DeleteAccountAdminController implements Initializable {
 
     // Populate the ComboBox with users from the controller
     public void setComboBoxUser() {
-        this.ComboBoxUser = ComboBoxUser;
-        ComboBoxUser.setItems((ObservableList<String>) cont.comboBoxInsert());
+        List<String> users = cont.comboBoxInsert();
+        ComboBoxUser.getItems().clear();
+        ComboBoxUser.getItems().addAll(users);
     }
 
     // Cancel button action: returns to MenuWindow
