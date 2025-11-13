@@ -16,8 +16,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.Admin;
 import model.Profile;
@@ -78,12 +80,13 @@ public class MenuWindowController implements Initializable {
             javafx.scene.Parent root = fxmlLoader.load();
 
             view.ModifyWindowController controllerWindow = fxmlLoader.getController();
-            //Generar un set usuario para poder tenero ahi y usarlo
             controllerWindow.setProfile(profile);
             controllerWindow.setCont(this.cont);
-            javafx.stage.Stage stage = new javafx.stage.Stage();
-            stage.setScene(new javafx.scene.Scene(root));
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
             stage.show();
+
             Stage currentStage = (Stage) Button_Modify.getScene().getWindow();
             currentStage.close();
 
@@ -114,7 +117,7 @@ public class MenuWindowController implements Initializable {
                 Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if(this.profile instanceof Admin){
+        if (this.profile instanceof Admin) {
             try {
                 javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/DeleteAccountAdmin.fxml"));
                 javafx.scene.Parent root = fxmlLoader.load();

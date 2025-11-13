@@ -6,6 +6,17 @@
             <file>file:/C:/Users/acer/Documents/RetoCRUD/test/viewText/DeleteAccountAdminTest.java</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/DeleteAccountAdminController.java</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/DeleteAccountController.java</file>
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/LogInWindowController.java</file>
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/SignUpWindow.fxml</file>
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/test/viewText/LogInTest.java</file>
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/main/Main.java</file>
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/test/viewText/SignUpTest.java</file>
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/model/configClass.properties</file>
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/MenuWindow.fxml</file>
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/SignUpWindowController.java</file>
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/LogInWindow.fxml</file>
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/model/ConnectionPool.java</file>
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/MenuWindowController.java</file>
         </group>
     </open-files>
 </project-private>
