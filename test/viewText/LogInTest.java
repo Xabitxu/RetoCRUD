@@ -59,7 +59,7 @@ public class LogInTest extends ApplicationTest {
     public void test4_LoginFlow_IncorrectThenCorrect() {
         // 1️⃣ Usuario y contraseña incorrectos
         clickOn("#TextField_Username");
-        write("jlopez");
+        write("mramirez");
         clickOn("#PasswordField_Password");
         write("wrongpass");
         clickOn("#Button_LogIn");
@@ -70,7 +70,7 @@ public class LogInTest extends ApplicationTest {
         // 2️⃣ Borrar contraseña y escribir la correcta
         clickOn("#PasswordField_Password");
         eraseText(9); // borra "wrongpass"
-        write("pass123");
+        write("pass456");
 
         // Reintentar login
         clickOn("#Button_LogIn");

@@ -30,36 +30,41 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
 /**
- * FXML Controller class
- *
- * @author Deusto
+ * FXML Controller class for deleting user accounts as an Admin.
  */
 public class DeleteAccountAdminController implements Initializable {
 
     @FXML
-    private ComboBox<String> ComboBoxUser;
-    @FXML
-    private TextField TextFieldPassword;
-    private Controller cont;
-    private Profile profile;
-    @FXML
-    private Button Button_Cancel;
-    @FXML
-    private Button Button_Delete;
+    private ComboBox<String> ComboBoxUser; // ComboBox with all users
 
+    @FXML
+    private TextField TextFieldPassword; // Password field for confirmation
+
+    private Controller cont; // Controller to handle business logic
+    private Profile profile; // Currently logged-in admin
+
+    @FXML
+    private Button Button_Cancel; // Button to cancel the action
+    @FXML
+    private Button Button_Delete; // Button to delete selected user
+
+    // Set the controller instance
     public void setCont(Controller cont) {
         this.cont = cont;
     }
 
+    // Set the current admin profile
     public void setProfile(Profile profile) {
         this.profile = profile;
     }
 
+    // Populate the ComboBox with users from the controller
     public void setComboBoxUser() {
         this.ComboBoxUser = ComboBoxUser;
         ComboBoxUser.setItems((ObservableList<String>) cont.comboBoxInsert());
     }
 
+    // Cancel button action: returns to MenuWindow
     @FXML
     private void cancel() {
         try {
@@ -67,12 +72,14 @@ public class DeleteAccountAdminController implements Initializable {
             javafx.scene.Parent root = fxmlLoader.load();
 
             view.MenuWindowController controllerWindow = fxmlLoader.getController();
-            //Generar un set usuario para poder tenero ahi y usarlo
             controllerWindow.setUsuario(profile);
             controllerWindow.setCont(this.cont);
+
             javafx.stage.Stage stage = new javafx.stage.Stage();
             stage.setScene(new javafx.scene.Scene(root));
             stage.show();
+
+            // Close current window
             Stage currentStage = (Stage) Button_Cancel.getScene().getWindow();
             currentStage.close();
 
@@ -81,6 +88,7 @@ public class DeleteAccountAdminController implements Initializable {
         }
     }
 
+    // Delete button action: deletes the selected user
     @FXML
     private void delete() {
         if (TextFieldPassword.getText().isEmpty()) {
@@ -158,12 +166,8 @@ public class DeleteAccountAdminController implements Initializable {
         }
     }
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // Initialization logic can be added here if needed
     }
-
 }

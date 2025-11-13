@@ -26,57 +26,46 @@ import model.Profile;
 import model.User;
 
 /**
- * FXML Controller class
- *
- * @author acer
+ * Controller for the main Menu window.
+ * Handles navigation to modify, delete, and logout actions.
  */
 public class MenuWindowController implements Initializable {
 
-    /**
-     * Initializes the controller class.
-     */
     @FXML
     private Button Button_Delete;
+
     @FXML
     private Button Button_Modify;
+
     @FXML
     private Button Button_LogOut;
+
     @FXML
     private Label label_Username;
-    @FXML
+
     private Profile profile;
-    @FXML
     private Controller cont;
-
-    public MenuWindowController() {
-    }
-
-    public MenuWindowController(Button Button_Delete, Button Button_Modify, Button Button_LogOut, Label label_Username, Profile profile, Controller cont) {
-        this.Button_Delete = Button_Delete;
-        this.Button_Modify = Button_Modify;
-        this.Button_LogOut = Button_LogOut;
-        this.label_Username = label_Username;
-        this.profile = profile;
-        this.cont = cont;
-    }
 
     public void setUsuario(Profile profile) {
         this.profile = profile;
         label_Username.setText(profile.getUsername());
     }
 
-    public Controller getCont() {
-        return cont;
-    }
-
     public void setCont(Controller cont) {
         this.cont = cont;
     }
 
+    public Controller getCont() {
+        return cont;
+    }
+
+    /**
+     * Opens the Modify window.
+     */
     @FXML
     private void modifyVentana(ActionEvent event) {
         try {
-            javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/ModifyWindow.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/ModifyWindow.fxml"));
             javafx.scene.Parent root = fxmlLoader.load();
 
             view.ModifyWindowController controllerWindow = fxmlLoader.getController();
@@ -95,51 +84,49 @@ public class MenuWindowController implements Initializable {
         }
     }
 
+    /**
+     * Opens the Delete Account window depending on profile type.
+     * Users open DeleteAccount; Admins open DeleteAccountAdmin.
+     */
     @FXML
     private void delete() {
-        if (this.profile instanceof User) {
-
-            try {
-                javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/DeleteAccount.fxml"));
+        try {
+            FXMLLoader fxmlLoader;
+            if (profile instanceof User) {
+                fxmlLoader = new FXMLLoader(getClass().getResource("/view/DeleteAccount.fxml"));
                 javafx.scene.Parent root = fxmlLoader.load();
-
                 view.DeleteAccountController controllerWindow = fxmlLoader.getController();
-                //Generar un set usuario para poder tenero ahi y usarlo
                 controllerWindow.setProfile(profile);
-                controllerWindow.setCont(this.cont);
-                javafx.stage.Stage stage = new javafx.stage.Stage();
-                stage.setScene(new javafx.scene.Scene(root));
+                controllerWindow.setCont(cont);
+
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
                 stage.show();
                 Stage currentStage = (Stage) Button_Delete.getScene().getWindow();
                 currentStage.close();
 
-            } catch (IOException ex) {
-                Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if (this.profile instanceof Admin) {
-            try {
-                javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/DeleteAccountAdmin.fxml"));
+            } else if (profile instanceof Admin) {
+                fxmlLoader = new FXMLLoader(getClass().getResource("/view/DeleteAccountAdmin.fxml"));
                 javafx.scene.Parent root = fxmlLoader.load();
-
                 view.DeleteAccountAdminController controllerWindow = fxmlLoader.getController();
-                //Generar un set usuario para poder tenero ahi y usarlo
                 controllerWindow.setProfile(profile);
-                controllerWindow.setCont(this.cont);
+                controllerWindow.setCont(cont);
                 controllerWindow.setComboBoxUser();
-                javafx.stage.Stage stage = new javafx.stage.Stage();
-                stage.setScene(new javafx.scene.Scene(root));
+
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
                 stage.show();
                 Stage currentStage = (Stage) Button_Delete.getScene().getWindow();
                 currentStage.close();
-
-            } catch (IOException ex) {
-                Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } catch (IOException ex) {
+            Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
+    /**
+     * Closes the current window (used for logout).
+     */
     @FXML
     private void cerrarVentana(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -148,7 +135,6 @@ public class MenuWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // Initialization logic if needed
     }
-
 }

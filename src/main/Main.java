@@ -14,18 +14,18 @@ import utilities.Utilities;
 
 
 
-/**
- * Main class for the Colegio Reto application.
- * This class provides the main menu and handles user interactions for managing teaching units, exam calls, and statements.
- *
- * @author Deusto
- */
-public class Main extends Application{
 
+public class Main extends Application {
+
+    /**
+     * Starts the JavaFX application by loading the login window.
+     *
+     * @param stage the primary stage for this application
+     * @throws Exception if the FXML file cannot be loaded
+     */
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/view/LogInWindow.fxml"));
-        
         Scene scene = new Scene(root);
         stage.setTitle("Login Application");
         stage.setScene(scene);
@@ -33,10 +33,12 @@ public class Main extends Application{
     }
 
     /**
-     * @param args the command line arguments
+     * Main method to launch the JavaFX application.
+     *
+     * @param args command-line arguments (not used)
      */
     public static void main(String[] args) {
-        launch(args);        
+        launch(args);
     }
-    
+
 }

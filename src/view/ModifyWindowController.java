@@ -25,45 +25,46 @@ import model.Profile;
 import model.User;
 
 /**
- * FXML Controller class
- *
- * @author acer
+ * FXML Controller class for modifying a user's profile.
  */
 public class ModifyWindowController implements Initializable {
 
     @FXML
-    private Label LabelUsername;
+    private Label LabelUsername; // Label showing current username
     @FXML
-    private Label LabelEmail;
+    private Label LabelEmail; // Label showing current email
     @FXML
-    private TextField TextField_Name;
+    private TextField TextField_Name; // Field to modify name
     @FXML
-    private TextField TextField_Surname;
+    private TextField TextField_Surname; // Field to modify surname
     @FXML
-    private TextField TextField_Telephone;
+    private TextField TextField_Telephone; // Field to modify telephone
     @FXML
-    private TextField TextField_NewPass;
+    private TextField TextField_NewPass; // Field to enter new password
     @FXML
-    private TextField TextField_CNewPass;
+    private TextField TextField_CNewPass; // Field to confirm new password
     @FXML
     private Button Button_Cancel;
 
-    private Controller cont;
-    private Profile profile;
+    private Controller cont; // Controller instance for business logic
+    private Profile profile; // Currently logged-in user
 
+    // Set controller instance
     public void setCont(Controller cont) {
         this.cont = cont;
     }
 
+    // Set current profile and populate labels
     public void setProfile(Profile profile) {
         this.profile = profile;
-
         LabelUsername.setText(profile.getUsername());
         LabelEmail.setText(profile.getEmail());
     }
 
+    // Save changes button action
     @FXML
     private void save(ActionEvent event) throws passwordequalspassword {
+        // Read all input values
         String name = TextField_Name.getText();
         String surname = TextField_Surname.getText();
         String telephone = TextField_Telephone.getText();
@@ -79,19 +80,8 @@ public class ModifyWindowController implements Initializable {
         }
         
         username = profile.getUsername();
-        email = profile.getEmail();
 
         if (name == null || name.isEmpty() || name.equals("Insert your new name")) {
-            name = profile.getName();
-        }
-        if (surname == null || surname.isEmpty() || surname.equals("Insert your new surname")) {
-            surname = profile.getSurname();
-        }
-        if (telephone == null || telephone.isEmpty() || telephone.equals("Insert your new telephone")) {
-            telephone = profile.getTelephone();
-        }
-        if (newPass == null || newPass.isEmpty() || cNewPass == null || cNewPass.isEmpty() || 
-            newPass.equals("New Password") || cNewPass.equals("Confirm New Password")) {
             newPass = profile.getPassword();
             
             Boolean success = cont.modificarUser(newPass, email, name, telephone, surname, username, gender);
@@ -132,6 +122,7 @@ public class ModifyWindowController implements Initializable {
                 error.showAndWait();
             }
         } else {
+            // If passwords are not equal, throw exception
             if (!newPass.equals(cNewPass)) {
                 throw new passwordequalspassword("Las contraseñas no coinciden");
             } else {
@@ -156,9 +147,11 @@ public class ModifyWindowController implements Initializable {
                         view.MenuWindowController controllerWindow = fxmlLoader.getController();
                         controllerWindow.setUsuario(profile);
                         controllerWindow.setCont(this.cont);
-                        javafx.stage.Stage stage = new javafx.stage.Stage();
+
+                        Stage stage = new Stage();
                         stage.setScene(new javafx.scene.Scene(root));
                         stage.show();
+
                         Stage currentStage = (Stage) Button_Cancel.getScene().getWindow();
                         currentStage.close();
 
@@ -176,6 +169,7 @@ public class ModifyWindowController implements Initializable {
         }
     }
 
+    // Cancel button action: returns to MenuWindow without saving
     @FXML
     private void cancel() {
         try {
@@ -183,12 +177,13 @@ public class ModifyWindowController implements Initializable {
             javafx.scene.Parent root = fxmlLoader.load();
 
             view.MenuWindowController controllerWindow = fxmlLoader.getController();
-            //Generar un set usuario para poder tenero ahi y usarlo
             controllerWindow.setUsuario(profile);
             controllerWindow.setCont(this.cont);
-            javafx.stage.Stage stage = new javafx.stage.Stage();
+
+            Stage stage = new Stage();
             stage.setScene(new javafx.scene.Scene(root));
             stage.show();
+
             Stage currentStage = (Stage) Button_Cancel.getScene().getWindow();
             currentStage.close();
 
@@ -197,12 +192,8 @@ public class ModifyWindowController implements Initializable {
         }
     }
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // Initialization logic (if needed) can be added here
     }
-
 }
