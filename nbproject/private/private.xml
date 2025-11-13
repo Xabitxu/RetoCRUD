@@ -3,30 +3,26 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Dejorve/2DAMI/ADT/RetoCRUD/test/viewText/DeleteAccountAdminTest.java</file>
-            <file>file:/C:/Dejorve/2DAMI/ADT/RetoCRUD/src/main/Main.java</file>
-            <file>file:/C:/Dejorve/2DAMI/ADT/RetoCRUD/src/model/configClass.properties</file>
-            <file>file:/C:/Dejorve/2DAMI/ADT/RetoCRUD/test/viewText/LogInTest.java</file>
-            <file>file:/C:/Dejorve/2DAMI/ADT/RetoCRUD/test/viewText/SignUpTest.java</file>
-            <file>file:/C:/Dejorve/2DAMI/ADT/RetoCRUD/test/viewText/DeleteAccountTest.java</file>
-            <file>file:/C:/Dejorve/2DAMI/ADT/RetoCRUD/src/model/ConnectionPool.java</file>
-=======
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/test/viewText/DeleteAccountTest.java</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/test/viewText/DeleteAccountAdminTest.java</file>
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/test/viewText/ModifyTest.java</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/DeleteAccountAdminController.java</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/DeleteAccountController.java</file>
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/ModifyWindow.fxml</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/LogInWindowController.java</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/SignUpWindow.fxml</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/test/viewText/LogInTest.java</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/main/Main.java</file>
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/ModifyWindowController.java</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/test/viewText/SignUpTest.java</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/model/configClass.properties</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/MenuWindow.fxml</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/SignUpWindowController.java</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/LogInWindow.fxml</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/model/ConnectionPool.java</file>
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/DeleteAccount.fxml</file>
             <file>file:/C:/Users/acer/Documents/RetoCRUD/src/view/MenuWindowController.java</file>
->>>>>>> xabi
+            <file>file:/C:/Users/acer/Documents/RetoCRUD/test/viewText/MenuTest.java</file>
         </group>
     </open-files>
 </project-private>
