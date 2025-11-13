@@ -47,7 +47,7 @@ public class LogInTest extends ApplicationTest {
     public void test1_InitialState() {
         verifyThat("#TextField_Username", hasText(""));
         verifyThat("#PasswordField_Password", hasText(""));
-        verifyThat("#Button_LogIn", isDisabled());
+        verifyThat("#Button_LogIn", isEnabled());
     }
 
     /**
