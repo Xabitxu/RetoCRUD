@@ -30,36 +30,41 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
 /**
- * FXML Controller class
- *
- * @author Deusto
+ * FXML Controller class for deleting user accounts as an Admin.
  */
 public class DeleteAccountAdminController implements Initializable {
 
     @FXML
-    private ComboBox<String> ComboBoxUser;
-    @FXML
-    private TextField TextFieldPassword;
-    private Controller cont;
-    private Profile profile;
-    @FXML
-    private Button Button_Cancel;
-    @FXML
-    private Button Button_Delete;
+    private ComboBox<String> ComboBoxUser; // ComboBox with all users
 
+    @FXML
+    private TextField TextFieldPassword; // Password field for confirmation
+
+    private Controller cont; // Controller to handle business logic
+    private Profile profile; // Currently logged-in admin
+
+    @FXML
+    private Button Button_Cancel; // Button to cancel the action
+    @FXML
+    private Button Button_Delete; // Button to delete selected user
+
+    // Set the controller instance
     public void setCont(Controller cont) {
         this.cont = cont;
     }
 
+    // Set the current admin profile
     public void setProfile(Profile profile) {
         this.profile = profile;
     }
 
+    // Populate the ComboBox with users from the controller
     public void setComboBoxUser() {
         this.ComboBoxUser = ComboBoxUser;
         ComboBoxUser.setItems((ObservableList<String>) cont.comboBoxInsert());
     }
 
+    // Cancel button action: returns to MenuWindow
     @FXML
     private void cancel() {
         try {
@@ -67,12 +72,14 @@ public class DeleteAccountAdminController implements Initializable {
             javafx.scene.Parent root = fxmlLoader.load();
 
             view.MenuWindowController controllerWindow = fxmlLoader.getController();
-            //Generar un set usuario para poder tenero ahi y usarlo
             controllerWindow.setUsuario(profile);
             controllerWindow.setCont(this.cont);
+
             javafx.stage.Stage stage = new javafx.stage.Stage();
             stage.setScene(new javafx.scene.Scene(root));
             stage.show();
+
+            // Close current window
             Stage currentStage = (Stage) Button_Cancel.getScene().getWindow();
             currentStage.close();
 
@@ -81,9 +88,10 @@ public class DeleteAccountAdminController implements Initializable {
         }
     }
 
+    // Delete button action: deletes the selected user
     @FXML
     private void delete() {
-        if (!TextFieldPassword.getText().equals("")) {
+        if (!TextFieldPassword.getText().equals("")) { // Check password is entered
             javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
             alert.setTitle("Delete account");
             alert.setHeaderText("Are you sure you want to delete your account?");
@@ -91,39 +99,38 @@ public class DeleteAccountAdminController implements Initializable {
 
             java.util.Optional<javafx.scene.control.ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == javafx.scene.control.ButtonType.OK) {
-                // Aquí va la lógica para eliminar la cuenta
                 try {
-                    //ComboBoxUser.setItems((ObservableList<String>) cont.comboBoxInsert());
-                    String user, password;
-                    user = ComboBoxUser.getValue();
-                    password = TextFieldPassword.getText();
+                    // Get selected user and entered password
+                    String user = ComboBoxUser.getValue();
+                    String password = TextFieldPassword.getText();
+
+                    // Call controller to delete user
                     cont.dropOutAdmin(user, password);
-                    // Mostrar un mensaje de éxito
+
+                    // Show success message
                     javafx.scene.control.Alert success = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
                     success.setTitle("Deleted account");
                     success.setHeaderText(null);
                     success.setContentText("Your account has been successfully deleted.");
                     success.showAndWait();
-                    try {
-                        javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/MenuWindow.fxml"));
-                        javafx.scene.Parent root = fxmlLoader.load();
 
-                        view.MenuWindowController controllerWindow = fxmlLoader.getController();
-                        //Generar un set usuario para poder tenero ahi y usarlo
-                        controllerWindow.setUsuario(profile);
-                        controllerWindow.setCont(this.cont);
-                        javafx.stage.Stage stage = new javafx.stage.Stage();
-                        stage.setScene(new javafx.scene.Scene(root));
-                        stage.show();
-                        Stage currentStage = (Stage) Button_Cancel.getScene().getWindow();
-                        currentStage.close();
+                    // Return to MenuWindow
+                    javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/MenuWindow.fxml"));
+                    javafx.scene.Parent root = fxmlLoader.load();
+                    view.MenuWindowController controllerWindow = fxmlLoader.getController();
+                    controllerWindow.setUsuario(profile);
+                    controllerWindow.setCont(this.cont);
 
-                    } catch (IOException ex) {
-                        Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    Stage stage = new Stage();
+                    stage.setScene(new javafx.scene.Scene(root));
+                    stage.show();
+
+                    Stage currentStage = (Stage) Button_Cancel.getScene().getWindow();
+                    currentStage.close();
 
                 } catch (Exception ex) {
                     ex.printStackTrace();
+                    // Show error alert if deletion fails
                     javafx.scene.control.Alert error = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
                     error.setTitle("Error");
                     error.setHeaderText("The account could not be deleted.");
@@ -131,35 +138,30 @@ public class DeleteAccountAdminController implements Initializable {
                     error.showAndWait();
                 }
             } else {
-                // Si el usuario cancela, no hacer nada
-                System.out.println("Deletion cancelled by the user.");
+                // If user cancels, return to MenuWindow
                 try {
                     javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/MenuWindow.fxml"));
                     javafx.scene.Parent root = fxmlLoader.load();
-
                     view.MenuWindowController controllerWindow = fxmlLoader.getController();
-                    //Generar un set usuario para poder tenero ahi y usarlo
                     controllerWindow.setUsuario(profile);
                     controllerWindow.setCont(cont);
-                    javafx.stage.Stage stage = new javafx.stage.Stage();
+
+                    Stage stage = new Stage();
                     stage.setScene(new javafx.scene.Scene(root));
                     stage.show();
+
                     Stage currentStage = (Stage) Button_Delete.getScene().getWindow();
                     currentStage.close();
 
                 } catch (IOException ex) {
-                    Logger.getLogger(LogInWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(DeleteAccountAdminController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
     }
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // Initialization logic can be added here if needed
     }
-
 }

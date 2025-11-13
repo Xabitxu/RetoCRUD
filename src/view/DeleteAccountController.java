@@ -28,32 +28,52 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
 /**
- * FXML Controller class
- *
- * @author Deusto
+ * Controller for the Delete Account window for regular Users.
+ * This controller allows a user to delete their own account.
  */
 public class DeleteAccountController implements Initializable {
 
+    // Label displaying the username of the logged-in user
     @FXML
     private Label LabelUsername;
+
+    // TextField to enter the user's password for confirmation
     @FXML
     private TextField TextFieldPassword;
-    private Controller cont;
-    private Profile profile;
+
+    // Buttons to cancel or execute deletion
     @FXML
     private Button Button_Cancel;
     @FXML
     private Button Button_Delete;
 
+    // Reference to the main Controller handling business logic
+    private Controller cont;
+
+    // Current logged-in profile
+    private Profile profile;
+
+    /**
+     * Sets the Controller instance.
+     * @param cont Controller object
+     */
     public void setCont(Controller cont) {
         this.cont = cont;
     }
 
+    /**
+     * Sets the current logged-in profile and updates the username label.
+     * @param profile Profile object
+     */
     public void setProfile(Profile profile) {
         this.profile = profile;
         LabelUsername.setText(profile.getUsername());
     }
 
+    /**
+     * Handles cancel button action.
+     * Closes the current window and returns to MenuWindow.
+     */
     @FXML
     private void cancel() {
         try {
@@ -61,7 +81,6 @@ public class DeleteAccountController implements Initializable {
             javafx.scene.Parent root = fxmlLoader.load();
 
             view.MenuWindowController controllerWindow = fxmlLoader.getController();
-            //Generar un set usuario para poder tenero ahi y usarlo
             controllerWindow.setUsuario(profile);
             controllerWindow.setCont(this.cont);
             javafx.stage.Stage stage = new javafx.stage.Stage();
@@ -71,10 +90,14 @@ public class DeleteAccountController implements Initializable {
             currentStage.close();
 
         } catch (IOException ex) {
-            Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuWindowController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Handles delete button action.
+     * Confirms deletion and calls the Controller to remove the user account.
+     */
     @FXML
     private void delete() {
 
@@ -83,21 +106,20 @@ public class DeleteAccountController implements Initializable {
         alert.setHeaderText("Are you sure you want to delete your account?");
         alert.setContentText("This action cannot be undone..");
 
-        // Mostrar el alert y esperar la respuesta del usuario
         java.util.Optional<javafx.scene.control.ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == javafx.scene.control.ButtonType.OK) {
-            // Aquí va la lógica para eliminar la cuenta
             try {
                 String user, password;
                 user = LabelUsername.getText();
                 password = TextFieldPassword.getText();
                 cont.dropOutUser(user, password);
-                // Mostrar un mensaje de éxito
+
                 javafx.scene.control.Alert success = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
                 success.setTitle("Deleted account");
                 success.setHeaderText(null);
                 success.setContentText("Your account has been successfully deleted.");
                 success.showAndWait();
+
                 try {
                     javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/LogInWindow.fxml"));
                     javafx.scene.Parent root = fxmlLoader.load();
@@ -110,7 +132,7 @@ public class DeleteAccountController implements Initializable {
                     currentStage.close();
 
                 } catch (IOException ex) {
-                    Logger.getLogger(DeleteAccountController.class.getName()).log(Level.SEVERE, null, ex);
+                    java.util.logging.Logger.getLogger(DeleteAccountController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
 
             } catch (Exception ex) {
@@ -122,14 +144,12 @@ public class DeleteAccountController implements Initializable {
                 error.showAndWait();
             }
         } else {
-            // Si el usuario cancela, no hacer nada
             System.out.println("Deletion cancelled by the user.");
             try {
                 javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/MenuWindow.fxml"));
                 javafx.scene.Parent root = fxmlLoader.load();
 
                 view.MenuWindowController controllerWindow = fxmlLoader.getController();
-                //Generar un set usuario para poder tenero ahi y usarlo
                 controllerWindow.setUsuario(profile);
                 controllerWindow.setCont(cont);
                 javafx.stage.Stage stage = new javafx.stage.Stage();
@@ -139,17 +159,13 @@ public class DeleteAccountController implements Initializable {
                 currentStage.close();
 
             } catch (IOException ex) {
-                Logger.getLogger(LogInWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                java.util.logging.Logger.getLogger(LogInWindowController.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
         }
     }
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // Initialization logic if needed
     }
-
 }

@@ -18,17 +18,17 @@ import model.ConnectionPool;
 import threads.HiloConnection;
 
 /**
- * Implementation of ClassDAO using database operations. Handles all database
- * interactions for the application.
- *
- * @author acer
+ * Implementation of ClassDAO using database operations.
+ * Handles all database interactions for users and admins.
+ * Provides login, signup, deletion, modification, and retrieval of usernames.
+ * 
+ * Author: acer
  */
 public class DBImplementation implements ClassDAO {
 
-    //private Connection con;
     private PreparedStatement stmt;
 
-    // The following attributes are used to retrieve values from the config file
+    // Configuration for database connection
     private ResourceBundle configFile;
     private String driverDB;
     private String urlDB;
@@ -36,24 +36,23 @@ public class DBImplementation implements ClassDAO {
     private String passwordDB;
 
     // SQL statements
-    //Inserts  (New user sing up) Metodos Hechos
-    final String SQLSINGUPPROFILE = "INSERT INTO PROFILE_ (USERNAME, PASSWORD_, EMAIL, NAME_, TELEPHONE, SURNAME) VALUES (?,?,?,?,?,?);";
-    final String SQLSIGNUPUSER = "INSERT INTO USER_ (USERNAME, GENDER, CARD_NUMBER) VALUES (?,?,?);";
-    //final String SQLSIGNUPADMIN = "INSERT INTO ADMIN_ (USERNAME, CURRENT_ACCOUNT) VALUES (?,?);";
-    //Delete (Drop out)
-    //final String SQLDELETEUSER = "DELETE FROM USER_u WHERE USERNAME = ? AND PASSWORD_ = ?;";
-    //final String SQLDELETEADMIN = "DELETE * FROM ADMIN_ WHERE USERNAME = ? AND PASSWORD_ = ?;";
-    final String SLQDELETEPROFILE = "DELETE FROM PROFILE_ WHERE USERNAME = ? AND PASSWORD_ = ?;";
-    final String SLQDELETEPROFILEADMIN = "DELETE p FROM PROFILE_ p JOIN USER_ u ON p.USERNAME = u.USERNAME JOIN ADMIN_ a ON p.USERNAME = a.USERNAME WHERE p.PASSWORD_ = ? AND u.username = ?;";
-    //Log In Metodos hechos
-    final String SLQLOGINUSER = "SELECT p.*, u.GENDER, u.CARD_NUMBER FROM PROFILE_ p JOIN USER_ u ON p.USERNAME= u.USERNAME WHERE u.USERNAME = ? AND p.PASSWORD_ = ?;";
-    final String SLQLOGINADMIN = "SELECT p.*, a.CURRENT_ACCOUNT FROM PROFILE_ p JOIN ADMIN_ a ON p.USERNAME= a.USERNAME WHERE a.USERNAME = ? AND p.PASSWORD_ = ?;";
+    private final String SQLSINGUPPROFILE = "INSERT INTO PROFILE_ (USERNAME, PASSWORD_, EMAIL, NAME_, TELEPHONE, SURNAME) VALUES (?,?,?,?,?,?);";
+    private final String SQLSIGNUPUSER = "INSERT INTO USER_ (USERNAME, GENDER, CARD_NUMBER) VALUES (?,?,?);";
 
-    final String SQLMODIFYPROFILE = "UPDATE PROFILE_ P SET P.PASSWORD_ = ?, P.EMAIL = ?, P.NAME_ = ?, P.TELEPHONE = ?, P.SURNAME = ? WHERE USERNAME = ?;";
-    final String SQLMODIFYUSER = "UPDATE PROFILE_ U SET U.GENDER = ? WHERE USERNAME = ?;";
+    private final String SLQDELETEPROFILE = "DELETE FROM PROFILE_ WHERE USERNAME = ? AND PASSWORD_ = ?;";
+    private final String SLQDELETEPROFILEADMIN = "DELETE p FROM PROFILE_ p JOIN USER_ u ON p.USERNAME = u.USERNAME JOIN ADMIN_ a ON p.USERNAME = a.USERNAME WHERE p.PASSWORD_ = ? AND u.username = ?;";
 
-    final String SLQSELECTNUSER = "SELECT u.USERNAME FROM USER_ u;";
+    private final String SLQLOGINUSER = "SELECT p.*, u.GENDER, u.CARD_NUMBER FROM PROFILE_ p JOIN USER_ u ON p.USERNAME= u.USERNAME WHERE u.USERNAME = ? AND p.PASSWORD_ = ?;";
+    private final String SLQLOGINADMIN = "SELECT p.*, a.CURRENT_ACCOUNT FROM PROFILE_ p JOIN ADMIN_ a ON p.USERNAME= a.USERNAME WHERE a.USERNAME = ? AND p.PASSWORD_ = ?;";
 
+    private final String SQLMODIFYPROFILE = "UPDATE PROFILE_ P SET P.PASSWORD_ = ?, P.EMAIL = ?, P.NAME_ = ?, P.TELEPHONE = ?, P.SURNAME = ? WHERE USERNAME = ?;";
+    private final String SQLMODIFYUSER = "UPDATE PROFILE_ U SET U.GENDER = ? WHERE USERNAME = ?;";
+
+    private final String SLQSELECTNUSER = "SELECT u.USERNAME FROM USER_ u;";
+
+    /**
+     * Default constructor that loads DB configuration.
+     */
     public DBImplementation() {
         this.configFile = ResourceBundle.getBundle("model.configClass");
         this.driverDB = this.configFile.getString("Driver");
@@ -62,6 +61,13 @@ public class DBImplementation implements ClassDAO {
         this.passwordDB = this.configFile.getString("DBPass");
     }
 
+    /**
+     * Logs in a user or admin from the database.
+     *
+     * @param username The username to log in
+     * @param password The password to validate
+     * @return Profile object (User or Admin) if found, null otherwise
+     */
     @Override
     public Profile logIn(String username, String password) {
         Connection con = null;
@@ -88,7 +94,7 @@ public class DBImplementation implements ClassDAO {
                     profile_admin.setCurrentAccount(result.getString("CURRENT_ACCOUNT"));
                     return profile_admin;
                 } else {
-                    System.out.println("Usuario encontrado en la base de datos");
+                    System.out.println("User not found in database");
                 }
             } else {
                 User profile_user = new User();
@@ -104,32 +110,32 @@ public class DBImplementation implements ClassDAO {
                 return profile_user;
             }
         } catch (SQLException e) {
-            System.out.println("Error en la consulta a la base de datos");
+            System.out.println("Database query error");
             e.printStackTrace();
-        }
-        try {
-            if (stmt != null) {
-                stmt.close();
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing database connection");
+                e.printStackTrace();
             }
-            if (con != null) {
-                con.close();
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al cerrar la conexión a la BD");
-            e.printStackTrace();
         }
         return null;
-
     }
 
+    /**
+     * Signs up a new user in the database.
+     *
+     * @return true if signup was successful, false otherwise
+     */
     @Override
     public Boolean signUp(String gender, String cardNumber, String username, String password, String email, String name, String telephone, String surname) {
-        HiloConnection conectionThread = new HiloConnection(30);
-        conectionThread.start();
+        HiloConnection connectionThread = new HiloConnection(30);
+        connectionThread.start();
         boolean success = false;
         try {
-            Connection con = waitForConnection(conectionThread);
-            //INSERT INTO PROFILE_ (USERNAME, PASSWORD, EMAIL, NAME_, TELEPHONE, SURNAME) VALUES (?,?,?,?,?,?)
+            Connection con = waitForConnection(connectionThread);
             stmt = con.prepareStatement(SQLSINGUPPROFILE);
             stmt.setString(1, username);
             stmt.setString(2, password);
@@ -144,113 +150,91 @@ public class DBImplementation implements ClassDAO {
                 stmt.setString(2, gender);
                 stmt.setString(3, cardNumber);
                 rowsUpdated = stmt.executeUpdate();
-                if (rowsUpdated > 0) {
-                    success = true;
-                } else {
-                    success = false;
-                }
-            } else {
-                success = false;
+                success = rowsUpdated > 0;
             }
-
-        } catch (SQLException e) {
-            System.out.println("Error en la consulta a la base de datos");
+        } catch (SQLException | InterruptedException e) {
+            System.out.println("Database error on signup");
             e.printStackTrace();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(DBImplementation.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-                conectionThread.releaseConnection();
+                if (stmt != null) stmt.close();
+                connectionThread.releaseConnection();
             } catch (SQLException e) {
-                System.out.println("Error al cerrar la conexión a la BD");
+                System.out.println("Error closing DB connection after signup");
                 e.printStackTrace();
             }
         }
         return success;
     }
 
+    /**
+     * Deletes a standard user from the database.
+     */
     @Override
     public Boolean dropOutUser(String username, String password) {
-        HiloConnection conectionThread = new HiloConnection(30);
-        conectionThread.start();
+        HiloConnection connectionThread = new HiloConnection(30);
+        connectionThread.start();
         boolean success = false;
         try {
-            Connection con = waitForConnection(conectionThread);
+            Connection con = waitForConnection(connectionThread);
             stmt = con.prepareStatement(SLQDELETEPROFILE);
             stmt.setString(1, username);
             stmt.setString(2, password);
-            int rowsUpdated = stmt.executeUpdate();
-            if (rowsUpdated > 0) {
-                success = true;
-            } else {
-                success = false;
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error en la consulta a la base de datos");
+            success = stmt.executeUpdate() > 0;
+        } catch (SQLException | InterruptedException e) {
+            System.out.println("Database error on deleting user");
             e.printStackTrace();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(DBImplementation.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-                conectionThread.releaseConnection();
+                if (stmt != null) stmt.close();
+                connectionThread.releaseConnection();
             } catch (SQLException e) {
-                System.out.println("Error al cerrar la conexión a la BD");
+                System.out.println("Error closing DB connection after deleting user");
                 e.printStackTrace();
             }
         }
         return success;
     }
 
+    /**
+     * Deletes an admin from the database.
+     */
     @Override
     public Boolean dropOutAdmin(String username, String password) {
-        HiloConnection conectionThread = new HiloConnection(30);
-        conectionThread.start();
+        HiloConnection connectionThread = new HiloConnection(30);
+        connectionThread.start();
         boolean success = false;
         try {
-            Connection con = waitForConnection(conectionThread);
+            Connection con = waitForConnection(connectionThread);
             stmt = con.prepareStatement(SLQDELETEPROFILEADMIN);
-            stmt.setString(1, username);
-            stmt.setString(2, password);
-            int rowsUpdated = stmt.executeUpdate();
-            if (rowsUpdated > 0) {
-                success = true;
-            } else {
-                success = false;
-            }
-        } catch (SQLException e) {
-            System.out.println("Error en la consulta a la base de datos");
+            stmt.setString(1, password);
+            stmt.setString(2, username);
+            success = stmt.executeUpdate() > 0;
+        } catch (SQLException | InterruptedException e) {
+            System.out.println("Database error on deleting admin");
             e.printStackTrace();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(DBImplementation.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-                conectionThread.releaseConnection();
+                if (stmt != null) stmt.close();
+                connectionThread.releaseConnection();
             } catch (SQLException e) {
-                System.out.println("Error al cerrar la conexión a la BD");
+                System.out.println("Error closing DB connection after deleting admin");
                 e.printStackTrace();
             }
         }
         return success;
     }
 
+    /**
+     * Modifies the information of a user in the database.
+     */
     @Override
     public Boolean modificarUser(String password, String email, String name, String telephone, String surname, String username, String gender) {
-        HiloConnection conectionThread = new HiloConnection(30);
-        conectionThread.start();
+        HiloConnection connectionThread = new HiloConnection(30);
+        connectionThread.start();
         boolean success = false;
-
         try {
-            Connection con = waitForConnection(conectionThread);
+            Connection con = waitForConnection(connectionThread);
             stmt = con.prepareStatement(SQLMODIFYPROFILE);
             stmt.setString(1, password);
             stmt.setString(2, email);
@@ -258,81 +242,74 @@ public class DBImplementation implements ClassDAO {
             stmt.setString(4, telephone);
             stmt.setString(5, surname);
             stmt.setString(6, username);
-
             int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated < 1) {
                 stmt = con.prepareStatement(SQLMODIFYUSER);
                 stmt.setString(1, gender);
                 stmt.setString(2, username);
-                rowsUpdated = stmt.executeUpdate();
-                if (rowsUpdated > 0) {
-                    success = true;
-                } else {
-                    System.out.println("Usuario encontrado en la base de datos");
-                }
+                success = stmt.executeUpdate() > 0;
             } else {
-                success = false;
+                success = true;
             }
-        } catch (SQLException e) {
-            System.out.println("Error en la consulta a la base de datos");
+        } catch (SQLException | InterruptedException e) {
+            System.out.println("Database error on modifying user");
             e.printStackTrace();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(DBImplementation.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-                conectionThread.releaseConnection();
-
+                if (stmt != null) stmt.close();
+                connectionThread.releaseConnection();
             } catch (SQLException e) {
-                System.out.println("Error al cerrar la conexión a la BD");
+                System.out.println("Error closing DB connection after modifying user");
                 e.printStackTrace();
             }
         }
         return success;
-
     }
 
-    private Connection waitForConnection(HiloConnection thread) throws InterruptedException {
-        int attempts = 0;
-
-        while (!thread.isReady() && attempts < 50) {
-            Thread.sleep(10);
-            attempts++;
-        }
-
-        return thread.getConnection();
-    }
-
+    /**
+     * Retrieves a list of usernames from the database.
+     *
+     * @return List of usernames
+     */
     @Override
     public List comboBoxInsert() {
         ObservableList<String> listaUsuarios = FXCollections.observableArrayList();
-
         Connection con = null;
         try {
             con = ConnectionPool.getConnection();
             stmt = con.prepareStatement(SLQSELECTNUSER);
             ResultSet result = stmt.executeQuery();
-            while ((result.next())) {
+            while (result.next()) {
                 listaUsuarios.add(result.getString("USERNAME"));
             }
         } catch (SQLException e) {
-            System.out.println("Error en la consulta a la base de datos");
+            System.out.println("Database error on retrieving usernames");
             e.printStackTrace();
-        }
-        try {
-            if (stmt != null) {
-                stmt.close();
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing DB connection after retrieving usernames");
+                e.printStackTrace();
             }
-            if (con != null) {
-                con.close();
-            }
-        } catch (SQLException e) {
-            System.out.println("Error al cerrar la conexión a la BD");
-            e.printStackTrace();
         }
         return listaUsuarios;
     }
 
+    /**
+     * Waits for a connection from a HiloConnection thread.
+     *
+     * @param thread The HiloConnection thread
+     * @return Connection object
+     * @throws InterruptedException if thread is interrupted
+     */
+    private Connection waitForConnection(HiloConnection thread) throws InterruptedException {
+        int attempts = 0;
+        while (!thread.isReady() && attempts < 50) {
+            Thread.sleep(10);
+            attempts++;
+        }
+        return thread.getConnection();
+    }
 }

@@ -14,37 +14,71 @@ import model.DBImplementation;
 import model.Profile;
 import model.User;
 
+/**
+ * Controller class that handles interaction between the GUI and the database.
+ * Provides login, signup, deletion, modification, and data retrieval methods.
+ * 
+ * Author: acer
+ */
 public class Controller {
 
     private ClassDAO dao;
 
+    /**
+     * Constructor for Controller.
+     *
+     * @param dao The DAO implementation to handle database operations
+     */
     public Controller(ClassDAO dao) {
         this.dao = dao;
     }
 
+    /**
+     * Attempts to log in a user or admin.
+     *
+     * @param username The username
+     * @param password The password
+     * @return Profile object if login succeeds, null otherwise
+     */
     public Profile logIn(String username, String password) {
         return dao.logIn(username, password);
     }
 
+    /**
+     * Signs up a new user.
+     *
+     * @return true if signup succeeds, false otherwise
+     */
     public Boolean signUp(String gender, String cardNumber, String username, String password, String email,
             String name, String telephone, String surname) {
         return dao.signUp(gender, cardNumber, username, password, email, name, telephone, surname);
     }
 
+    /**
+     * Deletes a user account.
+     */
     public Boolean dropOutUser(String username, String password) {
         return dao.dropOutUser(username, password);
     }
 
+    /**
+     * Deletes an admin account.
+     */
     public Boolean dropOutAdmin(String username, String password) {
         return dao.dropOutAdmin(username, password);
     }
 
+    /**
+     * Modifies user information.
+     */
     public Boolean modificarUser(String password, String email, String name, String telephone, String surname, String username, String gender) {
         return dao.modificarUser(password, email, name, telephone, surname, username, gender);
     }
 
+    /**
+     * Retrieves a list of usernames for GUI combo boxes.
+     */
     public List comboBoxInsert() {
         return dao.comboBoxInsert();
     }
-
 }

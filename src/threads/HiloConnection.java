@@ -11,6 +11,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.ConnectionPool;
 
+/**
+ * Thread class to obtain a database connection asynchronously.
+ * Useful to avoid blocking the main GUI thread.
+ * 
+ * Author: acer
+ */
 public class HiloConnection extends Thread {
 
     private int delay = 30;
@@ -22,14 +28,23 @@ public class HiloConnection extends Thread {
         this.delay = delay;
     }
 
+    /**
+     * Returns the connection obtained by the thread.
+     */
     public Connection getConnection() {
         return con;
     }
 
+    /**
+     * Returns true if the connection is ready.
+     */
     public boolean isReady() {
         return ready;
     }
 
+    /**
+     * Signals the thread to release the connection and stop running.
+     */
     public void releaseConnection() {
         this.end = true;
         this.interrupt();
@@ -40,7 +55,7 @@ public class HiloConnection extends Thread {
         try {
             try {
                 con = ConnectionPool.getConnection();
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 Logger.getLogger(HiloConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
             ready = true;
@@ -49,10 +64,7 @@ public class HiloConnection extends Thread {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
-                    if (end) {
-                        break;
-                    }
-
+                    if (end) break;
                     Thread.currentThread().interrupt();
                 }
             }
@@ -63,14 +75,12 @@ public class HiloConnection extends Thread {
                 Thread.currentThread().interrupt();
             }
         } finally {
-
             if (con != null) {
                 try {
                     con.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(HiloConnection.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
             }
         }
     }

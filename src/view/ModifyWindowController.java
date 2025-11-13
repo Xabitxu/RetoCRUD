@@ -25,75 +25,72 @@ import model.Profile;
 import model.User;
 
 /**
- * FXML Controller class
- *
- * @author acer
+ * FXML Controller class for modifying a user's profile.
  */
 public class ModifyWindowController implements Initializable {
 
     @FXML
-    private Label LabelUsername;
+    private Label LabelUsername; // Label showing current username
     @FXML
-    private Label LabelEmail;
+    private Label LabelEmail; // Label showing current email
     @FXML
-    private TextField TextField_Name;
+    private TextField TextField_Name; // Field to modify name
     @FXML
-    private TextField TextField_Surname;
+    private TextField TextField_Surname; // Field to modify surname
     @FXML
-    private TextField TextField_Telephone;
+    private TextField TextField_Telephone; // Field to modify telephone
     @FXML
-    private TextField TextField_NewPass;
+    private TextField TextField_NewPass; // Field to enter new password
     @FXML
-    private TextField TextField_CNewPass;
+    private TextField TextField_CNewPass; // Field to confirm new password
     @FXML
-    private RadioButton RadioButton_Man;
+    private RadioButton RadioButton_Man; // Radio button for male
     @FXML
-    private RadioButton RadioButton_Woman;
+    private RadioButton RadioButton_Woman; // Radio button for female
     @FXML
-    private RadioButton RadioButton_Other;
-    private ToggleGroup grupOp;
+    private RadioButton RadioButton_Other; // Radio button for other gender
+    private ToggleGroup grupOp; // ToggleGroup for gender radio buttons
     @FXML
-    private Button Button_Cancel;
+    private Button Button_Cancel; // Cancel button
 
-    private Controller cont;
-    private Profile profile;
+    private Controller cont; // Controller instance for business logic
+    private Profile profile; // Currently logged-in user
 
+    // Set controller instance
     public void setCont(Controller cont) {
         this.cont = cont;
     }
 
+    // Set current profile and populate labels
     public void setProfile(Profile profile) {
         this.profile = profile;
-
         LabelUsername.setText(profile.getUsername());
         LabelEmail.setText(profile.getEmail());
     }
 
+    // Save changes button action
     @FXML
     private void save(ActionEvent event) throws passwordequalspassword {
+        // Read all input values
         String name = TextField_Name.getText();
         String surname = TextField_Surname.getText();
         String telephone = TextField_Telephone.getText();
         String newPass = TextField_NewPass.getText();
         String cNewPass = TextField_CNewPass.getText();
         String gender = ((User) profile).getGender();
-        String username;
-        String email;
+        String username = profile.getUsername();
+        String email = profile.getEmail();
+
+        // Update gender based on selected radio button
         if (RadioButton_Man.isSelected()) {
             gender = "Man";
-        } else {
-            if (RadioButton_Woman.isSelected()) {
-                gender = "Woman";
-            } else {
-                if (RadioButton_Other.isSelected()) {
-                    gender = "Other";
-                }
-            }
+        } else if (RadioButton_Woman.isSelected()) {
+            gender = "Woman";
+        } else if (RadioButton_Other.isSelected()) {
+            gender = "Other";
         }
-        username = profile.getUsername();
 
-        email = profile.getEmail();
-
+        // If fields are empty, keep current profile values
         if (name == null || name.equals("Insert your new name")) {
             name = profile.getName();
         }
@@ -103,26 +100,30 @@ public class ModifyWindowController implements Initializable {
         if (telephone.equals("") || telephone.equals("Insert your new telephone")) {
             telephone = profile.getTelephone();
         }
+
+        // Check if password fields are empty
         if (newPass.equals("") || cNewPass.equals("") || newPass.equals("New Password") || cNewPass.equals("Confirm New Password")) {
             newPass = profile.getPassword();
             cont.modificarUser(newPass, email, name, telephone, surname, username, gender);
         } else {
+            // If passwords are not equal, throw exception
             if (!newPass.equals(cNewPass)) {
-
                 throw new passwordequalspassword("No son iguales las contraseñas");
             } else {
+                // If passwords match, modify user and return to menu
                 if (cont.modificarUser(newPass, email, name, telephone, surname, username, gender)) {
                     try {
                         javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/MenuWindow.fxml"));
                         javafx.scene.Parent root = fxmlLoader.load();
 
                         view.MenuWindowController controllerWindow = fxmlLoader.getController();
-                        //Generar un set usuario para poder tenero ahi y usarlo
                         controllerWindow.setUsuario(profile);
                         controllerWindow.setCont(this.cont);
-                        javafx.stage.Stage stage = new javafx.stage.Stage();
+
+                        Stage stage = new Stage();
                         stage.setScene(new javafx.scene.Scene(root));
                         stage.show();
+
                         Stage currentStage = (Stage) Button_Cancel.getScene().getWindow();
                         currentStage.close();
 
@@ -134,6 +135,7 @@ public class ModifyWindowController implements Initializable {
         }
     }
 
+    // Cancel button action: returns to MenuWindow without saving
     @FXML
     private void cancel() {
         try {
@@ -141,12 +143,13 @@ public class ModifyWindowController implements Initializable {
             javafx.scene.Parent root = fxmlLoader.load();
 
             view.MenuWindowController controllerWindow = fxmlLoader.getController();
-            //Generar un set usuario para poder tenero ahi y usarlo
             controllerWindow.setUsuario(profile);
             controllerWindow.setCont(this.cont);
-            javafx.stage.Stage stage = new javafx.stage.Stage();
+
+            Stage stage = new Stage();
             stage.setScene(new javafx.scene.Scene(root));
             stage.show();
+
             Stage currentStage = (Stage) Button_Cancel.getScene().getWindow();
             currentStage.close();
 
@@ -155,12 +158,8 @@ public class ModifyWindowController implements Initializable {
         }
     }
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // Initialization logic (if needed) can be added here
     }
-
 }
