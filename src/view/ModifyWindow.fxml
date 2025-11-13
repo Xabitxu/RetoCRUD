@@ -3,7 +3,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -22,31 +21,15 @@
       <Label layoutX="42.0" layoutY="114.0" prefHeight="17.0" prefWidth="36.0" text="Name" />
       <Label layoutX="38.0" layoutY="147.0" prefHeight="17.0" prefWidth="59.0" text="Surname" />
       <Label layoutX="31.0" layoutY="179.0" prefHeight="17.0" prefWidth="66.0" text="Telephone" />
-      <Label layoutX="120.0" layoutY="208.0" prefHeight="17.0" prefWidth="43.0" text="Gender" />
-      <Label layoutX="95.0" layoutY="254.0" prefHeight="17.0" prefWidth="80.0" text="New Password" />
-      <Label layoutX="72.0" layoutY="303.0" prefHeight="17.0" prefWidth="125.0" text="Confirm New Password" />
-      <Button fx:id="Button_Cancel" layoutX="17.0" layoutY="362.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="89.0" style="-fx-background-color: A7C4E5; -fx-border-color: #000000;" text="Cancel" />
-      <Button fx:id="Button_SaveChanges" layoutX="157.0" layoutY="362.0" mnemonicParsing="false" onAction="#save" style="-fx-background-color: A7C4E5; -fx-border-color: #000000;" text="Save changes" />
+      <Label layoutX="95.0" layoutY="220.0" prefHeight="17.0" prefWidth="80.0" text="New Password" />
+      <Label layoutX="72.0" layoutY="269.0" prefHeight="17.0" prefWidth="125.0" text="Confirm New Password" />
+      <Button fx:id="Button_Cancel" layoutX="17.0" layoutY="330.0" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="89.0" style="-fx-background-color: A7C4E5; -fx-border-color: #000000;" text="Cancel" />
+      <Button fx:id="Button_SaveChanges" layoutX="157.0" layoutY="330.0" mnemonicParsing="false" onAction="#save" style="-fx-background-color: A7C4E5; -fx-border-color: #000000;" text="Save changes" />
       <TextField fx:id="TextField_Name" layoutX="102.0" layoutY="110.0" prefHeight="25.0" prefWidth="155.0" promptText="Insert your new name" />
       <TextField fx:id="TextField_Surname" layoutX="103.0" layoutY="143.0" prefHeight="25.0" prefWidth="155.0" promptText="Insert your new surname" />
       <TextField fx:id="TextField_Telephone" layoutX="103.0" layoutY="175.0" prefHeight="25.0" prefWidth="155.0" promptText="Insert your new telephone" />
-      <PasswordField fx:id="TextField_NewPass" layoutX="62.0" layoutY="272.0" prefHeight="17.0" prefWidth="145.0" />
-      <PasswordField fx:id="TextField_CNewPass" layoutX="60.0" layoutY="321.0" />
-      <RadioButton fx:id="RadioButton_Man" layoutX="42.0" layoutY="232.0" mnemonicParsing="false" text="Man">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </RadioButton>
-      <RadioButton fx:id="RadioButton_Woman" layoutX="105.0" layoutY="232.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="59.0" text="Woman">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </RadioButton>
-      <RadioButton fx:id="RadioButton_Other" layoutX="187.0" layoutY="232.0" mnemonicParsing="false" text="Other">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </RadioButton>
+      <PasswordField fx:id="TextField_NewPass" layoutX="62.0" layoutY="238.0" prefHeight="17.0" prefWidth="145.0" />
+      <PasswordField fx:id="TextField_CNewPass" layoutX="60.0" layoutY="287.0" />
       <ImageView fitHeight="25.0" fitWidth="23.0" layoutX="13.0" layoutY="80.0" opacity="0.78">
          <image>
             <Image url="@../images/mail_34dp_5084C1_FILL0_wght400_GRAD0_opsz40.png" />

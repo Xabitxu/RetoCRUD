@@ -58,15 +58,10 @@ public class MenuTest extends ApplicationTest {
     private void performLogin(String username, String password) {
          // Esperar a que los campos del login estén disponibles
         clickOn("#TextField_Username");
-        // Limpiar el campo de usuario (Ctrl+A y Delete)
-        write("\u0001"); // Ctrl+A
-        write("\b"); // Backspace para cada carácter
+        
         write(username);
         
         clickOn("#PasswordField_Password");
-        // Limpiar el campo de contraseña (Ctrl+A y Delete)
-        write("\u0001"); // Ctrl+A
-        write("\b");
         write(password);
         
         clickOn("#Button_LogIn");

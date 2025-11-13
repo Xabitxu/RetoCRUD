@@ -15,7 +15,7 @@ public interface ClassDAO {
     public Boolean signUp(String gender, String cardNumber, String username, String password, String email, String name,
             String telephone, String surname);
     public Boolean dropOutUser(String username, String password);
-    public Boolean dropOutAdmin(String username, String password);
+    public Boolean dropOutAdmin(String usernameToDelete, String adminUsername, String adminPassword);
     public Boolean modificarUser (String password, String email, String name, String telephone, String surname, String username, String gender);
 
     public List comboBoxInsert();

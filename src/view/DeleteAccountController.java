@@ -77,6 +77,14 @@ public class DeleteAccountController implements Initializable {
 
     @FXML
     private void delete() {
+        if (TextFieldPassword.getText().isEmpty()) {
+            javafx.scene.control.Alert error = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+            error.setTitle("Error");
+            error.setHeaderText("Password required");
+            error.setContentText("Please enter your password to delete the account.");
+            error.showAndWait();
+            return;
+        }
 
         javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete account");
@@ -91,26 +99,35 @@ public class DeleteAccountController implements Initializable {
                 String user, password;
                 user = LabelUsername.getText();
                 password = TextFieldPassword.getText();
-                cont.dropOutUser(user, password);
-                // Mostrar un mensaje de éxito
-                javafx.scene.control.Alert success = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
-                success.setTitle("Deleted account");
-                success.setHeaderText(null);
-                success.setContentText("Your account has been successfully deleted.");
-                success.showAndWait();
-                try {
-                    javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/LogInWindow.fxml"));
-                    javafx.scene.Parent root = fxmlLoader.load();
+                Boolean success = cont.dropOutUser(user, password);
+                
+                if (success) {
+                    javafx.scene.control.Alert successAlert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Deleted account");
+                    successAlert.setHeaderText(null);
+                    successAlert.setContentText("Your account has been successfully deleted.");
+                    successAlert.showAndWait();
+                    
+                    try {
+                        javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/LogInWindow.fxml"));
+                        javafx.scene.Parent root = fxmlLoader.load();
 
-                    view.LogInWindowController controllerWindow = fxmlLoader.getController();
-                    javafx.stage.Stage stage = new javafx.stage.Stage();
-                    stage.setScene(new javafx.scene.Scene(root));
-                    stage.show();
-                    Stage currentStage = (Stage) Button_Delete.getScene().getWindow();
-                    currentStage.close();
+                        view.LogInWindowController controllerWindow = fxmlLoader.getController();
+                        javafx.stage.Stage stage = new javafx.stage.Stage();
+                        stage.setScene(new javafx.scene.Scene(root));
+                        stage.show();
+                        Stage currentStage = (Stage) Button_Delete.getScene().getWindow();
+                        currentStage.close();
 
-                } catch (IOException ex) {
-                    Logger.getLogger(DeleteAccountController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(DeleteAccountController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    javafx.scene.control.Alert error = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("Incorrect password");
+                    error.setContentText("The password is incorrect. Please try again.");
+                    error.showAndWait();
                 }
 
             } catch (Exception ex) {
@@ -122,7 +139,6 @@ public class DeleteAccountController implements Initializable {
                 error.showAndWait();
             }
         } else {
-            // Si el usuario cancela, no hacer nada
             System.out.println("Deletion cancelled by the user.");
             try {
                 javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/MenuWindow.fxml"));

@@ -35,8 +35,8 @@ public class Controller {
         return dao.dropOutUser(username, password);
     }
 
-    public Boolean dropOutAdmin(String username, String password) {
-        return dao.dropOutAdmin(username, password);
+    public Boolean dropOutAdmin(String usernameToDelete, String adminUsername, String adminPassword) {
+        return dao.dropOutAdmin(usernameToDelete, adminUsername, adminPassword);
     }
 
     public Boolean modificarUser(String password, String email, String name, String telephone, String surname, String username, String gender) {

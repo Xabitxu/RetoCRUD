@@ -46,13 +46,6 @@ public class ModifyWindowController implements Initializable {
     @FXML
     private TextField TextField_CNewPass;
     @FXML
-    private RadioButton RadioButton_Man;
-    @FXML
-    private RadioButton RadioButton_Woman;
-    @FXML
-    private RadioButton RadioButton_Other;
-    private ToggleGroup grupOp;
-    @FXML
     private Button Button_Cancel;
 
     private Controller cont;
@@ -76,48 +69,91 @@ public class ModifyWindowController implements Initializable {
         String telephone = TextField_Telephone.getText();
         String newPass = TextField_NewPass.getText();
         String cNewPass = TextField_CNewPass.getText();
-        String gender = ((User) profile).getGender();
+        String gender = "";
         String username;
         String email;
-        if (RadioButton_Man.isSelected()) {
-            gender = "Man";
-        } else {
-            if (RadioButton_Woman.isSelected()) {
-                gender = "Woman";
-            } else {
-                if (RadioButton_Other.isSelected()) {
-                    gender = "Other";
-                }
-            }
+        
+        // obtener el genero actual si es un User
+        if (profile instanceof User) {
+            gender = ((User) profile).getGender();
         }
+        
         username = profile.getUsername();
-
         email = profile.getEmail();
 
-        if (name == null || name.equals("Insert your new name")) {
+        if (name == null || name.isEmpty() || name.equals("Insert your new name")) {
             name = profile.getName();
         }
-        if (surname == null || surname.equals("Insert your new surname")) {
+        if (surname == null || surname.isEmpty() || surname.equals("Insert your new surname")) {
             surname = profile.getSurname();
         }
-        if (telephone.equals("") || telephone.equals("Insert your new telephone")) {
+        if (telephone == null || telephone.isEmpty() || telephone.equals("Insert your new telephone")) {
             telephone = profile.getTelephone();
         }
-        if (newPass.equals("") || cNewPass.equals("") || newPass.equals("New Password") || cNewPass.equals("Confirm New Password")) {
+        if (newPass == null || newPass.isEmpty() || cNewPass == null || cNewPass.isEmpty() || 
+            newPass.equals("New Password") || cNewPass.equals("Confirm New Password")) {
             newPass = profile.getPassword();
-            cont.modificarUser(newPass, email, name, telephone, surname, username, gender);
+            
+            Boolean success = cont.modificarUser(newPass, email, name, telephone, surname, username, gender);
+            if (success) {
+                // actualizar el objeto profile con los nuevos valores
+                profile.setName(name);
+                profile.setSurname(surname);
+                profile.setTelephone(telephone);
+                profile.setPassword(newPass);
+                
+                javafx.scene.control.Alert successAlert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Success");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("User data has been successfully updated.");
+                successAlert.showAndWait();
+                
+                try {
+                    javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/MenuWindow.fxml"));
+                    javafx.scene.Parent root = fxmlLoader.load();
+
+                    view.MenuWindowController controllerWindow = fxmlLoader.getController();
+                    controllerWindow.setUsuario(profile);
+                    controllerWindow.setCont(this.cont);
+                    javafx.stage.Stage stage = new javafx.stage.Stage();
+                    stage.setScene(new javafx.scene.Scene(root));
+                    stage.show();
+                    Stage currentStage = (Stage) Button_Cancel.getScene().getWindow();
+                    currentStage.close();
+
+                } catch (IOException ex) {
+                    Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                javafx.scene.control.Alert error = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+                error.setTitle("Error");
+                error.setHeaderText("Update failed");
+                error.setContentText("Could not update user data.");
+                error.showAndWait();
+            }
         } else {
             if (!newPass.equals(cNewPass)) {
-
-                throw new passwordequalspassword("No son iguales las contraseñas");
+                throw new passwordequalspassword("Las contraseñas no coinciden");
             } else {
-                if (cont.modificarUser(newPass, email, name, telephone, surname, username, gender)) {
+                Boolean success = cont.modificarUser(newPass, email, name, telephone, surname, username, gender);
+                if (success) {
+                    // actualizar el objeto profile con los nuevos valores
+                    profile.setName(name);
+                    profile.setSurname(surname);
+                    profile.setTelephone(telephone);
+                    profile.setPassword(newPass);
+                    
+                    javafx.scene.control.Alert successAlert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Success");
+                    successAlert.setHeaderText(null);
+                    successAlert.setContentText("User data has been successfully updated.");
+                    successAlert.showAndWait();
+                    
                     try {
                         javafx.fxml.FXMLLoader fxmlLoader = new javafx.fxml.FXMLLoader(getClass().getResource("/view/MenuWindow.fxml"));
                         javafx.scene.Parent root = fxmlLoader.load();
 
                         view.MenuWindowController controllerWindow = fxmlLoader.getController();
-                        //Generar un set usuario para poder tenero ahi y usarlo
                         controllerWindow.setUsuario(profile);
                         controllerWindow.setCont(this.cont);
                         javafx.stage.Stage stage = new javafx.stage.Stage();
@@ -129,6 +165,12 @@ public class ModifyWindowController implements Initializable {
                     } catch (IOException ex) {
                         Logger.getLogger(MenuWindowController.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                } else {
+                    javafx.scene.control.Alert error = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+                    error.setTitle("Error");
+                    error.setHeaderText("Update failed");
+                    error.setContentText("Could not update user data.");
+                    error.showAndWait();
                 }
             }
         }
